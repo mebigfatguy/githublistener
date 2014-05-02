@@ -1,0 +1,178 @@
+<!-- 
+/** githublistener - an github events recording using cassandra. 
+  * Copyright 2014 MeBigFatGuy.com 
+  * Copyright 2014 Dave Brosius 
+  * 
+  * Licensed under the Apache License, Version 2.0 (the "License"); 
+  * you may not use this file except in compliance with the License. 
+  * You may obtain a copy of the License at
+  * 
+  * http://www.apache.org/licenses/LICENSE-2.0 
+  * 
+  * Unless required by applicable law or agreed to in writing, 
+  * software distributed under the License is distributed on an "AS IS" BASIS, 
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+  * See the License for the specific language governing permissions and limitations 
+  * under the License. 
+  */ 
+-->
+
+<project name="githublistener" default="info">
+	<property file="build.properties"/>
+	<property file="version.properties" />
+
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="classes.dir" value="${basedir}/classes" />
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="javadoc.dir" value="${basedir}/javadoc" />
+	<property name="javac.source" value="1.7" />
+	<property name="javac.target" value="1.7" />
+	<property name="javac.deprecation" value="on" />
+	<property name="javac.debug" value="on" />
+
+	<property name="githublistener.version" value="0.1.0" />
+
+	<target name="clean" description="removes all generated collateral">
+		<delete dir="${classes.dir}" />
+		<delete dir="${javadoc.dir}" />
+		<delete file="${basedir}/githublistener-${githublistener.version}.jar" />
+		<delete file="${basedir}/githublistener-src-${githublistener.version}.zip" />
+	</target>
+
+	<path id="githublistener.classpath">
+		<pathelement location="${lib.dir}/cassandra-driver-core-${cassandra-driver-core.version}.jar" />
+        <pathelement location="${lib.dir}/cassandra-all-${cassandra-all.version}.jar" />
+        <pathelement location="${lib.dir}/snappy-java-${snappy-java.version}.jar" />
+		<pathelement location="${lib.dir}/slf4j-api-${slf4j-api.version}.jar" />
+        <pathelement location="${lib.dir}/commons-cli-${commons-cli.version}.jar" />
+        <pathelement location="${lib.dir}/guava-${guava.version}.jar" />
+        <pathelement location="${lib.dir}/netty-${netty.version}.jar" />
+        <pathelement location="${lib.dir}/metrics-core-${metrics-core.version}.jar" />
+        <pathelement location="${lib.dir}/jackson-core-asl-${jackson-core-asl.version}.jar" />
+        <pathelement location="${lib.dir}/jackson-mapper-asl-${jackson-mapper-asl.version}.jar" />
+        <pathelement location="${lib.dir}/libthrift-${libthrift.version}.jar" />
+		<pathelement location="${lib.dir}/github-api-${github-api.version}.jar" />
+		<pathelement location="${lib.dir}/jackson-databind-${jackson-databind.version}.jar" />
+		<pathelement location="${lib.dir}/jackson-core-${jackson-core.version}.jar" />
+		<pathelement location="${lib.dir}/jackson-annotations-${jackson-annotations.version}.jar" />
+		<pathelement location="${lib.dir}/commons-codec-${commons-codec.version}.jar" />
+		<pathelement location="${lib.dir}/commons-io-${commons-io.version}.jar" />
+		<pathelement location="${lib.dir}/commons-lang-${commons-lang.version}.jar" />
+		<pathelement location="${lib.dir}/bridge-method-annotation-${bridge-method-annotation.version}.jar" />
+		<pathelement location="${lib.dir}/okhttp-${okhttp.version}.jar" />
+
+	</path>
+	
+	<target name="info">
+        <echo message="githublistener - an github events recording using cassandra"/>
+        <echo message=""/>
+        <echo message="    this project uses yank (https://github.com/mebigfatguy/yank) for dependency management"/>
+        <echo message="    download yank.jar and place in ant/lib directory"/>
+        <echo message="    http://search.maven.org/#artifactdetails%7Ccom.mebigfatguy.yank%7Cyank%7C0.4.2%7Cjar"/>
+    </target>
+    
+	<target name="yank" xmlns:yank="antlib:com.mebigfatguy.yank">
+        <mkdir dir="${lib.dir}" />
+        <yank:yank yankFile="${basedir}/yank.xls" destination="${lib.dir}" source="true">
+            <server url="http://repo1.maven.org/maven2" />
+            <generateVersions propertyFileName="${basedir}/version.properties" />
+        </yank:yank>
+    </target>
+
+	<target name="-init" depends="yank" description="prepares repository for a build">
+		<mkdir dir="${classes.dir}" />
+		<mkdir dir="${javadoc.dir}" />
+		<mkdir dir="${lib.dir}" />
+	</target>
+
+	<target name="compile" depends="-init" description="compiles java files">
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" source="${javac.source}"
+			target="${javac.target}" deprecation="${javac.deprecation}" debug="${javac.debug}"
+			includeantruntime="false">
+			<classpath refid="githublistener.classpath" />
+		</javac>
+	</target>
+
+	<target name="srczip" description="builds the source distribution zip file">
+		<zip destfile="${basedir}/githublistener-src-${githublistener.version}.zip"
+			basedir="${basedir}">
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+				<include name="**/*.xml" />
+				<include name="**/*.xsd" />
+				<include name="**/*.license" />
+				<include name="**/*.txt" />
+				<include name="lib/*.jar" />
+			</fileset>
+		</zip>
+	</target>
+
+	<target name="javadoc" depends="-init"
+		description="build the javadoc for the project">
+		<javadoc packagenames="com.mebigfatguy.*" sourcepath="${src.dir}"
+			classpathref="githublistener.classpath" destdir="${javadoc.dir}"
+			windowtitle="githublistener api">
+			<doctitle><![CDATA[<h1>githublistener javadoc</h1>]]></doctitle>
+			<bottom><![CDATA[<i>Copyright &#169; 2014 MeBigFatGuy.com. All Rights Reserved.</i>]]></bottom>
+		</javadoc>
+	</target>
+
+	<target name="build" depends="clean, -init, compile"
+		description="compiles the code">
+	</target>
+
+	<target name="jar" depends="build" description="produces the githublistener jar file">
+		<jar destfile="${basedir}/githublistener-${githublistener.version}.jar">
+			<fileset dir="${classes.dir}">
+				<include name="**/*.class" />
+			</fileset>
+			<manifest>
+				<attribute name="githublistener.version" value="${githublistener.version}" />
+                <attribute name="Main-Class" value="com.mebigfatguy.githublistener.GitHubListener"/>
+				<attribute name="Application-Name" value="githublistener" />
+                <attribute name="Permissions" value="all-permissions" />
+                <attribute name="Codebase" value="*" />
+				<attribute name="Bundle-ManifestVersion" value="2" />
+				<attribute name="Bundle-Name" value="githublistener plugin" />
+				<attribute name="Bundle-SymbolicName" value="githublistener; singleton:=true" />
+				<attribute name="Bundle.version" value="${githublistener.version}" />
+				<attribute name="Bundle-ClassPath" value="." />
+				<attribute name="Bundle-Vendor" value="githublistener project" />
+				<attribute name="Bundle-ActivationPolicy" value="lazy" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="release" depends="build, srczip, javadoc"
+		description="prepares everything for a release" />
+
+	<target name="run" depends="jar" description="run githublistener against cassandra on localhost">
+		<java classname="com.mebigfatguy.githublistener.GitHubListener" fork="true" maxmemory="256m">
+            <arg value="-endpoints"/>
+            <arg value="127.0.0.1"/>
+			<classpath>
+				<pathelement location="${basedir}/githublistener-${githublistener.version}.jar"/>
+				<pathelement location="${lib.dir}/commons-cli-${commons-cli.version}.jar"/>
+                <pathelement location="${lib.dir}/cassandra-driver-core-${cassandra-driver.version}.jar" />
+                <pathelement location="${lib.dir}/cassandra-all-${cassandra.version}.jar" />
+                <pathelement location="${lib.dir}/snappy-java-${snappy.version}.jar" />
+                <pathelement location="${lib.dir}/slf4j-api-${slf4j-api.version}.jar" />
+                <pathelement location="${lib.dir}/guava-${guava.version}.jar" />
+                <pathelement location="${lib.dir}/netty-${netty.version}.jar" />
+                <pathelement location="${lib.dir}/metrics-core-${yammer.version}.jar" />
+                <pathelement location="${lib.dir}/jackson-core-asl-${jackson-core.version}.jar" />
+                <pathelement location="${lib.dir}/jackson-mapper-asl-${jackson-mapper.version}.jar" />
+                <pathelement location="${lib.dir}/libthrift-${libthrift.version}.jar" />
+				<pathelement location="${lib.dir}/github-api-${github-api.version}.jar" />
+				<pathelement location="${lib.dir}/jackson-databind-${jackson-databind.version}.jar" />		
+				<pathelement location="${lib.dir}/jackson-core-${jackson-core.version}.jar" />
+				<pathelement location="${lib.dir}/jackson-annotations-${jackson-annotations.version}.jar" />
+				<pathelement location="${lib.dir}/commons-codec-${commons-codec.version}.jar" />
+				<pathelement location="${lib.dir}/commons-io-${commons-io.version}.jar" />
+				<pathelement location="${lib.dir}/commons-lang-${commons-lang.version}.jar" />
+				<pathelement location="${lib.dir}/bridge-method-annotation-${bridge-method-annotation.version}.jar" />
+				<pathelement location="${lib.dir}/okhttp-${okhttp.version}.jar" />
+			</classpath>
+		</java>
+ 	</target>
+</project>
