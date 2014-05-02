@@ -55,7 +55,7 @@ public class CassandraWriter implements Runnable {
 			} catch (IOException ioe) {
 				LOGGER.error("Failed writing events to cassandra", ioe);
 			} catch (InterruptedException ioe) {
-				LOGGER.error("Failed fetching events from event queue", ioe);
+				return;
 			}
 		}
 	}

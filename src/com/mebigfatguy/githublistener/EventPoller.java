@@ -31,6 +31,7 @@ import com.squareup.okhttp.OkHttpClient;
 public class EventPoller implements Runnable {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EventPoller.class);
+	private static final int POLL_TIME = 10000;
 	
 	private final ArrayBlockingQueue<GHEventInfo> eventQueue;
 	private final GitHub github;
@@ -48,6 +49,9 @@ public class EventPoller implements Runnable {
 			try {
 				List<GHEventInfo> currentEvents = github.getEvents();
 				eventQueue.addAll(currentEvents);
+				Thread.sleep(POLL_TIME);
+			} catch (InterruptedException e) {
+				return;
 			} catch (IOException ioe) {
 				LOGGER.error("Failed fetching events from github", ioe);
 			}
