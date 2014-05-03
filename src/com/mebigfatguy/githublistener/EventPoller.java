@@ -45,6 +45,7 @@ public class EventPoller implements Runnable {
 			github = GitHub.connect();
 		} else {
 			github = GitHub.connectAnonymously();
+			LOGGER.warn("No authentication file found {}, connecting anonymously which severely limits rate", props);
 		}
 		github.setConnector(new OkHttpConnector(new OkHttpClient()));
 	}
