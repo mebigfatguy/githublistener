@@ -16,6 +16,7 @@
   */ 
 package com.mebigfatguy.githublistener;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -39,7 +40,12 @@ public class EventPoller implements Runnable {
 	public EventPoller(ArrayBlockingQueue<GHEventInfo> queue) throws IOException {
 		eventQueue = queue;
 		
-		github = GitHub.connectAnonymously();
+		File props = new File(System.getProperty("user.home"), ".github");
+		if (props.exists() && props.isFile()) {
+			github = GitHub.connect();
+		} else {
+			github = GitHub.connectAnonymously();
+		}
 		github.setConnector(new OkHttpConnector(new OkHttpClient()));
 	}
 	
