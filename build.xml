@@ -22,9 +22,10 @@
 	<property file="version.properties" />
 
 	<property name="src.dir" value="${basedir}/src" />
-	<property name="classes.dir" value="${basedir}/classes" />
+	<property name="target.dir" value="${basedir}/target" />
+	<property name="classes.dir" value="${target.dir}/classes" />
 	<property name="lib.dir" value="${basedir}/lib" />
-	<property name="javadoc.dir" value="${basedir}/javadoc" />
+	<property name="javadoc.dir" value="${target.dir}/javadoc" />
 	<property name="javac.source" value="1.7" />
 	<property name="javac.target" value="1.7" />
 	<property name="javac.deprecation" value="on" />
@@ -33,10 +34,7 @@
 	<property name="githublistener.version" value="0.1.0" />
 
 	<target name="clean" description="removes all generated collateral">
-		<delete dir="${classes.dir}" />
-		<delete dir="${javadoc.dir}" />
-		<delete file="${basedir}/githublistener-${githublistener.version}.jar" />
-		<delete file="${basedir}/githublistener-src-${githublistener.version}.zip" />
+		<delete dir="${target.dir}" />
 	</target>
 
 	<path id="githublistener.classpath">
@@ -94,7 +92,7 @@
 	</target>
 
 	<target name="srczip" description="builds the source distribution zip file">
-		<zip destfile="${basedir}/githublistener-src-${githublistener.version}.zip"
+		<zip destfile="${target.dir}/githublistener-src-${githublistener.version}.zip"
 			basedir="${basedir}">
 			<fileset dir="${src.dir}">
 				<include name="**/*.java" />
@@ -122,7 +120,7 @@
 	</target>
 
 	<target name="jar" depends="build" description="produces the githublistener jar file">
-		<jar destfile="${basedir}/githublistener-${githublistener.version}.jar">
+		<jar destfile="${target.dir}/githublistener-${githublistener.version}.jar">
 			<fileset dir="${classes.dir}">
 				<include name="**/*.class" />
 			</fileset>
@@ -151,7 +149,7 @@
             <arg value="-endpoints"/>
             <arg value="127.0.0.1"/>
 			<classpath>
-				<pathelement location="${basedir}/githublistener-${githublistener.version}.jar"/>
+				<pathelement location="${target.dir}/githublistener-${githublistener.version}.jar"/>
 				<pathelement location="${lib.dir}/commons-cli-${commons-cli.version}.jar"/>
                 <pathelement location="${lib.dir}/cassandra-driver-core-${cassandra-driver.version}.jar" />
                 <pathelement location="${lib.dir}/cassandra-all-${cassandra.version}.jar" />
