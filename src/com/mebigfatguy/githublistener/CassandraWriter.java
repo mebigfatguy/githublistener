@@ -18,7 +18,6 @@ package com.mebigfatguy.githublistener;
 
 import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.kohsuke.github.GHEventInfo;
 import org.slf4j.Logger;
@@ -32,7 +31,8 @@ import com.datastax.driver.core.exceptions.AlreadyExistsException;
 public class CassandraWriter implements Runnable {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CassandraWriter.class);
-	private static final AtomicBoolean schemaInitialized = new AtomicBoolean(false);
+	private static final Object SCHEMA_LOCK = new Object();
+	private static boolean isInitialized = false;
 	
 	private final ArrayBlockingQueue<GHEventInfo> eventQueue;
 	private final Session session;
@@ -63,27 +63,25 @@ public class CassandraWriter implements Runnable {
 	}
 	
 	private void setUpSchema(int replicationFactor) {
-		if (!schemaInitialized.getAndSet(true)) {
-	        try {
-	            session.execute(String.format("CREATE KEYSPACE github WITH replication = { 'class' : 'SimpleStrategy', 'replication_factor' : %d }", replicationFactor));
-	        } catch (AlreadyExistsException aee) {
-	        } finally {
-	            session.execute("use github");
-	        }
-
-	        try {
-	            session.execute("CREATE TABLE github.project_events (project text, user text, date_time timestamp, type text, primary key(project, user))");
-	        } catch (AlreadyExistsException aee) {
-	        } catch (Exception e) {
-	        	e.printStackTrace();
-	        }
-	        
-	        try {
-	            session.execute("CREATE TABLE github.user_events (user text, project text, date_time timestamp, type text, primary key(user, project))");
-	        } catch (AlreadyExistsException aee) {
-	        } catch (Exception e) {
-	        	e.printStackTrace();
-	        }
+		synchronized (SCHEMA_LOCK) {
+			if (!isInitialized) {
+		        try {
+		            session.execute(String.format("CREATE KEYSPACE github WITH replication = { 'class' : 'SimpleStrategy', 'replication_factor' : %d }", replicationFactor));
+		        } catch (AlreadyExistsException aee) {
+		        } finally {
+		            session.execute("use github");
+		        }
+	
+		        try {
+		            session.execute("CREATE TABLE github.project_events (project text, user text, date_time timestamp, type text, primary key(project, user))");
+		            session.execute("CREATE TABLE github.user_events (user text, project text, date_time timestamp, type text, primary key(user, project))");
+		        } catch (AlreadyExistsException aee) {
+		        } catch (Exception e) {
+		        	e.printStackTrace();
+		        }
+		        
+		        isInitialized = true;
+			}
 		}
 	}
 	
