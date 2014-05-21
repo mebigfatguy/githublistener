@@ -36,7 +36,8 @@ public class CassandraWriter implements Runnable {
 	
 	private final ArrayBlockingQueue<GHEventInfo> eventQueue;
 	private final Session session;
-	private PreparedStatement addEventPS;
+	private PreparedStatement addProjectEventPS;
+	private PreparedStatement addUserEventPS;
 	
 	public CassandraWriter(ArrayBlockingQueue<GHEventInfo> queue, Cluster cluster, int replicationFactor) {
 		eventQueue = queue;
@@ -51,7 +52,8 @@ public class CassandraWriter implements Runnable {
 		while (!Thread.interrupted()) {
 			try {
 				GHEventInfo event = eventQueue.take();
-				session.execute(addEventPS.bind(event.getRepository().getName(), event.getActorLogin(), event.getCreatedAt(), event.getType().name()));
+				session.execute(addProjectEventPS.bind(event.getRepository().getName(), event.getActorLogin(), event.getCreatedAt(), event.getType().name()));
+				session.execute(addUserEventPS.bind(event.getActorLogin(), event.getRepository().getName(), event.getCreatedAt(), event.getType().name()));
 			} catch (IOException ioe) {
 				LOGGER.error("Failed writing events to cassandra", ioe);
 			} catch (InterruptedException ioe) {
@@ -70,7 +72,14 @@ public class CassandraWriter implements Runnable {
 	        }
 
 	        try {
-	            session.execute("CREATE TABLE github.events (project text, user text, date_time timestamp, type text, primary key(project))");
+	            session.execute("CREATE TABLE github.project_events (project text, user text, date_time timestamp, type text, primary key(project, user))");
+	        } catch (AlreadyExistsException aee) {
+	        } catch (Exception e) {
+	        	e.printStackTrace();
+	        }
+	        
+	        try {
+	            session.execute("CREATE TABLE github.user_events (user text, project text, date_time timestamp, type text, primary key(user, project))");
 	        } catch (AlreadyExistsException aee) {
 	        } catch (Exception e) {
 	        	e.printStackTrace();
@@ -79,6 +88,7 @@ public class CassandraWriter implements Runnable {
 	}
 	
 	private void setUpStatements() {
-        addEventPS = session.prepare("insert into github.events (project, user, date_time, type) values (?,?,?,?)");
+        addProjectEventPS = session.prepare("insert into github.project_events (project, user, date_time, type) values (?,?,?,?)");
+        addUserEventPS = session.prepare("insert into github.user_events (user, project, date_time, type) values (?,?,?,?)");
     }
 }
