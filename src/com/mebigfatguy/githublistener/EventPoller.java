@@ -16,7 +16,6 @@
   */ 
 package com.mebigfatguy.githublistener;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -32,21 +31,15 @@ import com.squareup.okhttp.OkHttpClient;
 public class EventPoller implements Runnable {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EventPoller.class);
-	private static final int POLL_TIME = 10000;
+	private static final int POLL_TIME = (60 * 60 * 1000) / 6000;
 	
 	private final ArrayBlockingQueue<GHEventInfo> eventQueue;
 	private final GitHub github;
 	
-	public EventPoller(ArrayBlockingQueue<GHEventInfo> queue) throws IOException {
+	public EventPoller(ArrayBlockingQueue<GHEventInfo> queue, String userName, String authToken) throws IOException {
 		eventQueue = queue;
-		
-		File props = new File(System.getProperty("user.home"), ".github");
-		if (props.exists() && props.isFile()) {
-			github = GitHub.connect();
-		} else {
-			github = GitHub.connectAnonymously();
-			LOGGER.warn("No authentication file found {}, connecting anonymously which severely limits rate", props);
-		}
+
+		github = GitHub.connect(userName, authToken);
 		github.setConnector(new OkHttpConnector(new OkHttpClient()));
 	}
 	

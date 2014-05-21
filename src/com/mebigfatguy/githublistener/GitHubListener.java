@@ -16,7 +16,9 @@
   */ 
 package com.mebigfatguy.githublistener;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import org.apache.commons.cli.CommandLine;
@@ -35,12 +37,16 @@ public class GitHubListener {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GitHubListener.class);
 	
+	private static final String USERNAME = "username";
+	private static final String AUTHTOKEN = "authtoken";
     private static final String ENDPOINTS = "endpoints";
     private static final String NUM_WRITERS = "numwriters";
     private static final String RF = "rc";
     
     private static final ArrayBlockingQueue<GHEventInfo> eventQueue = new ArrayBlockingQueue<>(10000);
 
+    private static String userName;
+    private static String authToken;
     private static String[] endPoints;
     private static int numWriters;
     private static int replicationFactor;
@@ -59,14 +65,18 @@ public class GitHubListener {
 				writers[i].start();
 			}
 			
-			Runnable eventPoller = new EventPoller(eventQueue);
+			Runnable eventPoller = new EventPoller(eventQueue, userName, authToken);
 			Thread ept = new Thread(eventPoller);
 			ept.setDaemon(true);
 			ept.start();
 			
+			System.out.println("Type enter to exit");
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			br.readLine();
 			
 			synchronized(ept) {
 				try {
+					ept.interrupt();
 					ept.join();
 				} catch (InterruptedException ie) {
 				}
@@ -75,6 +85,7 @@ public class GitHubListener {
 			for (int i = 0; i < numWriters; i++) {
 				synchronized(writers[i]) {
 					try {
+						writers[i].interrupt();
 						writers[i].join();
 					} catch (InterruptedException ie) {
 					}
@@ -91,6 +102,9 @@ public class GitHubListener {
         Options options = createOptions();
         CommandLineParser parser = new GnuParser();
         CommandLine cmdLine = parser.parse(options, args);
+        
+        userName = cmdLine.getOptionValue(USERNAME);
+        authToken = cmdLine.getOptionValue(AUTHTOKEN);
         endPoints = cmdLine.getOptionValues(ENDPOINTS);
         if (endPoints == null) {
         	endPoints = new String[] {"127.0.0.1"};
@@ -114,7 +128,15 @@ public class GitHubListener {
     private static Options createOptions() {
         Options options = new Options();
 
-        Option option = new Option(ENDPOINTS, true, "space separated list of cassandra server server/ports");
+        Option option = new Option(USERNAME, true, "github user name");
+        option.setRequired(true);
+        options.addOption(option);
+        
+        option = new Option(AUTHTOKEN, true, "github auth token");
+        option.setRequired(true);
+        options.addOption(option);
+        
+        option = new Option(ENDPOINTS, true, "space separated list of cassandra server server/ports");
         option.setOptionalArg(true);
         option.setRequired(false);
         option.setArgs(100);
