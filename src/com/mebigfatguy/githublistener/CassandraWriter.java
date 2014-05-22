@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.joda.time.DateTime;
 import org.kohsuke.github.GHEventInfo;
@@ -34,23 +35,28 @@ import com.datastax.driver.core.exceptions.AlreadyExistsException;
 public class CassandraWriter implements Runnable {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CassandraWriter.class);
-	private static final Object SCHEMA_LOCK = new Object();
-	private static boolean isInitialized = false;
+	private static final Object LOCK = new Object();
+	private static boolean IS_INITIALIZED = false;
+	private static Session session;
+	private static PreparedStatement addBatchEventPS;
+	private static PreparedStatement incProjectDayCountPS;
+	private static PreparedStatement incUserDayCountPS;
+	private static PreparedStatement incProjectWeekCountPS;
+	private static PreparedStatement incUserWeekCountPS;
 	
 	private final ArrayBlockingQueue<GHEventInfo> eventQueue;
-	private final Session session;
-	private PreparedStatement addBatchEventPS;
-	private PreparedStatement incProjectDayCountPS;
-	private PreparedStatement incUserDayCountPS;
-	private PreparedStatement incProjectWeekCountPS;
-	private PreparedStatement incUserWeekCountPS;
 	
 	public CassandraWriter(ArrayBlockingQueue<GHEventInfo> queue, Cluster cluster, int replicationFactor) {
 		eventQueue = queue;
-		session = cluster.connect();
 		
-		setUpSchema(replicationFactor);
-		setUpStatements();
+		synchronized(LOCK) {
+			if (!IS_INITIALIZED) {
+				session = cluster.connect();
+				setUpSchema(replicationFactor);
+				setUpStatements();
+				IS_INITIALIZED = true;
+			}
+		}
 	}
 	
 	@Override
@@ -81,30 +87,25 @@ public class CassandraWriter implements Runnable {
 	}
 	
 	private void setUpSchema(int replicationFactor) {
-		synchronized (SCHEMA_LOCK) {
-			if (!isInitialized) {
-		        try {
-		            session.execute(String.format("CREATE KEYSPACE github WITH replication = { 'class' : 'SimpleStrategy', 'replication_factor' : %d }", replicationFactor));
-		        } catch (AlreadyExistsException aee) {
-		        } finally {
-		            session.execute("use github");
-		        }
-	
-		        try {
-		            session.execute("CREATE TABLE github.project_events (project text, user text, date_time timestamp, type text, primary key(project, user))");
-		            session.execute("CREATE TABLE github.user_events (user text, project text, date_time timestamp, type text, primary key(user, project))");
-		            session.execute("CREATE TABLE github.project_day_counts (project text, date timestamp, count counter, primary key (date, project))");
-		            session.execute("CREATE TABLE github.user_day_counts (user text, date timestamp, count counter, primary key (date, user))");
-		            session.execute("CREATE TABLE github.project_week_counts (project text, date timestamp, count counter, primary key (date, project))");
-		            session.execute("CREATE TABLE github.user_week_counts (user text, date timestamp, count counter, primary key (date, user))");
-		        } catch (AlreadyExistsException aee) {
-		        } catch (Exception e) {
-		        	e.printStackTrace();
-		        }
-		        
-		        isInitialized = true;
-			}
-		}
+
+        try {
+            session.execute(String.format("CREATE KEYSPACE github WITH replication = { 'class' : 'SimpleStrategy', 'replication_factor' : %d }", replicationFactor));
+        } catch (AlreadyExistsException aee) {
+        } finally {
+            session.execute("use github");
+        }
+
+        try {
+            session.execute("CREATE TABLE github.project_events (project text, user text, date_time timestamp, type text, primary key(project, user))");
+            session.execute("CREATE TABLE github.user_events (user text, project text, date_time timestamp, type text, primary key(user, project))");
+            session.execute("CREATE TABLE github.project_day_counts (project text, date timestamp, count counter, primary key (date, project))");
+            session.execute("CREATE TABLE github.user_day_counts (user text, date timestamp, count counter, primary key (date, user))");
+            session.execute("CREATE TABLE github.project_week_counts (project text, date timestamp, count counter, primary key (date, project))");
+            session.execute("CREATE TABLE github.user_week_counts (user text, date timestamp, count counter, primary key (date, user))");
+        } catch (AlreadyExistsException aee) {
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
 	}
 	
 	private void setUpStatements() {
