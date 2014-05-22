@@ -68,8 +68,9 @@ public class CassandraWriter implements Runnable {
 
 				Date day = new DateTime(date).withTimeAtStartOfDay().toDate();
 				Date week = new DateTime(day).withDayOfWeek(Calendar.SUNDAY).toDate();
+				Date month = new DateTime(week).withDayOfMonth(1).toDate();
 				
-				session.execute(incBatchCountPS.bind(project, day, user, day, project, week, user, week));
+				session.execute(incBatchCountPS.bind(project, day, user, day, project, week, user, week, project, month, user, month));
 			
 			} catch (IOException ioe) {
 				LOGGER.error("Failed writing events to cassandra", ioe);
@@ -95,9 +96,11 @@ public class CassandraWriter implements Runnable {
             session.execute("CREATE TABLE github.user_day_counts (user text, date timestamp, count counter, primary key (date, user))");
             session.execute("CREATE TABLE github.project_week_counts (project text, date timestamp, count counter, primary key (date, project))");
             session.execute("CREATE TABLE github.user_week_counts (user text, date timestamp, count counter, primary key (date, user))");
+            session.execute("CREATE TABLE github.project_month_counts (project text, date timestamp, count counter, primary key (date, project))");
+            session.execute("CREATE TABLE github.user_month_counts (user text, date timestamp, count counter, primary key (date, user))");
         } catch (AlreadyExistsException aee) {
         } catch (Exception e) {
-        	e.printStackTrace();
+        	LOGGER.error("Failed creating tables for github events", e);
         }
 	}
 	
@@ -115,6 +118,8 @@ public class CassandraWriter implements Runnable {
 									"update github.user_day_counts set count = count + 1 where user = ? and date = ?" +
 									"update github.project_week_counts set count = count + 1 where project = ? and date = ?" +
 									"update github.user_week_counts set count = count + 1 where user = ? and date = ?" +
+									"update github.project_month_counts set count = count + 1 where project = ? and date = ?" +
+									"update github.user_month_counts set count = count + 1 where user = ? and date = ?" +
 									"APPLY BATCH"
 									);
 	}
