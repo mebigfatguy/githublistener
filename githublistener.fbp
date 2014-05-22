@@ -7,7 +7,7 @@
   <AuxClasspathEntry>./lib/commons-codec-1.7.jar</AuxClasspathEntry>
   <AuxClasspathEntry>./lib/commons-io-1.4.jar</AuxClasspathEntry>
   <AuxClasspathEntry>./lib/commons-lang-2.6.jar</AuxClasspathEntry>
-  <AuxClasspathEntry>./lib/github-api-1.51.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>./lib/github-api-1.53.jar</AuxClasspathEntry>
   <AuxClasspathEntry>./lib/guava-17.0.jar</AuxClasspathEntry>
   <AuxClasspathEntry>./lib/jackson-annotations-2.2.3.jar</AuxClasspathEntry>
   <AuxClasspathEntry>./lib/jackson-core-2.2.3.jar</AuxClasspathEntry>
