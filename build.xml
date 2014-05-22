@@ -58,7 +58,7 @@
 		<pathelement location="${lib.dir}/commons-lang-${commons-lang.version}.jar" />
 		<pathelement location="${lib.dir}/bridge-method-annotation-${bridge-method-annotation.version}.jar" />
 		<pathelement location="${lib.dir}/okhttp-${okhttp.version}.jar" />
-
+		<pathelement location="${lib.dir}/joda-time-${joda-time.version}.jar" />
 	</path>
 	
 	<target name="info">
@@ -71,7 +71,7 @@
     
 	<target name="yank" xmlns:yank="antlib:com.mebigfatguy.yank">
         <mkdir dir="${lib.dir}" />
-        <yank:yank yankFile="${basedir}/yank.xls" destination="${lib.dir}" source="true">
+        <yank:yank yankFile="${basedir}/yank.xls" destination="${lib.dir}" source="true" separateClassifierTypes="true">
             <server url="http://repo1.maven.org/maven2" />
             <generateVersions propertyFileName="${basedir}/version.properties" />
         </yank:yank>
