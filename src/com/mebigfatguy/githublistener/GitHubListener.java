@@ -61,12 +61,14 @@ public class GitHubListener {
 			Thread[] writers = new Thread[numWriters];
 			for (int i = 0; i < numWriters; i++) {
 				writers[i] = new Thread(new CassandraWriter(eventQueue, cluster, replicationFactor));
+				writers[i].setName("Cassandra Writer #" + i + 1);
 				writers[i].setDaemon(true);
 				writers[i].start();
 			}
 			
 			Runnable eventPoller = new EventPoller(eventQueue, userName, authToken);
 			Thread ept = new Thread(eventPoller);
+			ept.setName("Event Poller");
 			ept.setDaemon(true);
 			ept.start();
 			
