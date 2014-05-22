@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.joda.time.DateTime;
 import org.kohsuke.github.GHEventInfo;
@@ -39,10 +38,7 @@ public class CassandraWriter implements Runnable {
 	private static boolean IS_INITIALIZED = false;
 	private static Session session;
 	private static PreparedStatement addBatchEventPS;
-	private static PreparedStatement incProjectDayCountPS;
-	private static PreparedStatement incUserDayCountPS;
-	private static PreparedStatement incProjectWeekCountPS;
-	private static PreparedStatement incUserWeekCountPS;
+	private static PreparedStatement incBatchCountPS;
 	
 	private final ArrayBlockingQueue<GHEventInfo> eventQueue;
 	
@@ -71,12 +67,9 @@ public class CassandraWriter implements Runnable {
 				session.execute(addBatchEventPS.bind(project, user, date, eventType, user, project, date, eventType));
 
 				Date day = new DateTime(date).withTimeAtStartOfDay().toDate();
-				session.execute(incProjectDayCountPS.bind(project, day));
-				session.execute(incUserDayCountPS.bind(user, day));
-				
 				Date week = new DateTime(day).withDayOfWeek(Calendar.SUNDAY).toDate();
-				session.execute(incProjectWeekCountPS.bind(project, week));
-				session.execute(incUserWeekCountPS.bind(user, week));
+				
+				session.execute(incBatchCountPS.bind(project, day, user, day, project, week, user, week));
 			
 			} catch (IOException ioe) {
 				LOGGER.error("Failed writing events to cassandra", ioe);
@@ -115,11 +108,14 @@ public class CassandraWriter implements Runnable {
 									"insert into github.user_events (user, project, date_time, type) values (?,?,?,?)" +
 									"APPLY BATCH"
 									);
-
-		incProjectDayCountPS = session.prepare("update github.project_day_counts set count = count + 1 where project = ? and date = ?");	
-    	incUserDayCountPS = session.prepare("update github.user_day_counts set count = count + 1 where user = ? and date = ?");
-    	incProjectWeekCountPS = session.prepare("update github.project_week_counts set count = count + 1 where project = ? and date = ?");	
-    	incUserWeekCountPS = session.prepare("update github.user_week_counts set count = count + 1 where user = ? and date = ?");
-
+		
+		incBatchCountPS = session.prepare(
+									"BEGIN COUNTER BATCH " + 
+									"update github.project_day_counts set count = count + 1 where project = ? and date = ?"	+
+									"update github.user_day_counts set count = count + 1 where user = ? and date = ?" +
+									"update github.project_week_counts set count = count + 1 where project = ? and date = ?" +
+									"update github.user_week_counts set count = count + 1 where user = ? and date = ?" +
+									"APPLY BATCH"
+									);
 	}
 }
