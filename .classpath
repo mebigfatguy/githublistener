@@ -5,7 +5,7 @@
 	<classpathentry kind="lib" path="lib/cassandra-all-2.0.7.jar"/>
 	<classpathentry kind="lib" path="lib/cassandra-driver-core-2.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-cli-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/github-api-1.51.jar" sourcepath="lib/github-api-1.51-sources.jar"/>
+	<classpathentry kind="lib" path="lib/github-api-1.51.jar" sourcepath="lib/sources/github-api-1.51-sources.jar"/>
 	<classpathentry kind="lib" path="lib/guava-17.0.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-core-asl-1.9.13.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-mapper-asl-1.9.13.jar"/>

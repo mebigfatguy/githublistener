@@ -39,8 +39,7 @@ public class CassandraWriter implements Runnable {
 	
 	private final ArrayBlockingQueue<GHEventInfo> eventQueue;
 	private final Session session;
-	private PreparedStatement addProjectEventPS;
-	private PreparedStatement addUserEventPS;
+	private PreparedStatement addBatchEventPS;
 	private PreparedStatement incProjectDayCountPS;
 	private PreparedStatement incUserDayCountPS;
 	private PreparedStatement incProjectWeekCountPS;
@@ -63,9 +62,7 @@ public class CassandraWriter implements Runnable {
 				String project = event.getRepository().getName();
 				String user = event.getActorLogin();
 				String eventType = (event.getType() == null) ? "" : event.getType().name();
-				
-				session.execute(addProjectEventPS.bind(project, user, date, eventType));
-				session.execute(addUserEventPS.bind(user, project, date, eventType));
+				session.execute(addBatchEventPS.bind(project, user, date, eventType, user, project, date, eventType));
 
 				Date day = new DateTime(date).withTimeAtStartOfDay().toDate();
 				session.execute(incProjectDayCountPS.bind(project, day));
@@ -111,9 +108,14 @@ public class CassandraWriter implements Runnable {
 	}
 	
 	private void setUpStatements() {
-        addProjectEventPS = session.prepare("insert into github.project_events (project, user, date_time, type) values (?,?,?,?)");
-        addUserEventPS = session.prepare("insert into github.user_events (user, project, date_time, type) values (?,?,?,?)");
-    	incProjectDayCountPS = session.prepare("update github.project_day_counts set count = count + 1 where project = ? and date = ?");	
+		addBatchEventPS = session.prepare(
+									"BEGIN BATCH " +
+									"insert into github.project_events (project, user, date_time, type) values (?,?,?,?) " +
+									"insert into github.user_events (user, project, date_time, type) values (?,?,?,?)" +
+									"APPLY BATCH"
+									);
+
+		incProjectDayCountPS = session.prepare("update github.project_day_counts set count = count + 1 where project = ? and date = ?");	
     	incUserDayCountPS = session.prepare("update github.user_day_counts set count = count + 1 where user = ? and date = ?");
     	incProjectWeekCountPS = session.prepare("update github.project_week_counts set count = count + 1 where project = ? and date = ?");	
     	incUserWeekCountPS = session.prepare("update github.user_week_counts set count = count + 1 where user = ? and date = ?");
