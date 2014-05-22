@@ -62,9 +62,9 @@ public class CassandraWriter implements Runnable {
 				session.execute(addProjectEventPS.bind(project, user, date, event.getType().name()));
 				session.execute(addUserEventPS.bind(user, project, date, event.getType().name()));
 
-				DateTime day = new DateTime(date).withTimeAtStartOfDay();
-				session.execute(incProjectDayCountPS.bind(project, day.toDate()));
-				session.execute(incUserDayCountPS.bind(user, day.toDate()));
+				Date day = new DateTime(date).withTimeAtStartOfDay().toDate();
+				session.execute(incProjectDayCountPS.bind(project, day));
+				session.execute(incUserDayCountPS.bind(user, day));
 			
 			} catch (IOException ioe) {
 				LOGGER.error("Failed writing events to cassandra", ioe);
