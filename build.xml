@@ -18,6 +18,7 @@
 -->
 
 <project name="githublistener" default="info">
+	<property file="${basedir}/user.properties"/>
 	<property file="${basedir}/build.properties"/>
 	<property file="${basedir}/version.properties" />
 
@@ -149,8 +150,10 @@
 
 	<target name="run" depends="jar" description="run githublistener against cassandra on localhost">
 		<java classname="com.mebigfatguy.githublistener.GitHubListener" fork="true" maxmemory="256m">
-            <arg value="-endpoints"/>
-            <arg value="127.0.0.1"/>
+            <arg value="-username"/>
+            <arg value="${username}"/>
+            <arg value="-authtoken"/>
+            <arg value="${authtoken}"/>
 			<classpath>
 				<path refid="githublistener.classpath"/>
 				<pathelement location="${target.dir}/githublistener-${githublistener.version}.jar"/>
