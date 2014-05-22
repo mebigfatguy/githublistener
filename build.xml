@@ -18,10 +18,11 @@
 -->
 
 <project name="githublistener" default="info">
-	<property file="build.properties"/>
-	<property file="version.properties" />
+	<property file="${basedir}/build.properties"/>
+	<property file="${basedir}/version.properties" />
 
 	<property name="src.dir" value="${basedir}/src" />
+	<property name="conf.dir" value="${basedir}/conf" />
 	<property name="target.dir" value="${basedir}/target" />
 	<property name="classes.dir" value="${target.dir}/classes" />
 	<property name="lib.dir" value="${basedir}/lib" />
@@ -151,27 +152,9 @@
             <arg value="-endpoints"/>
             <arg value="127.0.0.1"/>
 			<classpath>
+				<path refid="githublistener.classpath"/>
 				<pathelement location="${target.dir}/githublistener-${githublistener.version}.jar"/>
-				<pathelement location="${lib.dir}/commons-cli-${commons-cli.version}.jar"/>
-                <pathelement location="${lib.dir}/cassandra-driver-core-${cassandra-driver.version}.jar" />
-                <pathelement location="${lib.dir}/cassandra-all-${cassandra.version}.jar" />
-                <pathelement location="${lib.dir}/snappy-java-${snappy.version}.jar" />
-                <pathelement location="${lib.dir}/slf4j-api-${slf4j-api.version}.jar" />
-                <pathelement location="${lib.dir}/guava-${guava.version}.jar" />
-                <pathelement location="${lib.dir}/netty-${netty.version}.jar" />
-                <pathelement location="${lib.dir}/metrics-core-${yammer.version}.jar" />
-                <pathelement location="${lib.dir}/jackson-core-asl-${jackson-core.version}.jar" />
-                <pathelement location="${lib.dir}/jackson-mapper-asl-${jackson-mapper.version}.jar" />
-                <pathelement location="${lib.dir}/libthrift-${libthrift.version}.jar" />
-				<pathelement location="${lib.dir}/github-api-${github-api.version}.jar" />
-				<pathelement location="${lib.dir}/jackson-databind-${jackson-databind.version}.jar" />		
-				<pathelement location="${lib.dir}/jackson-core-${jackson-core.version}.jar" />
-				<pathelement location="${lib.dir}/jackson-annotations-${jackson-annotations.version}.jar" />
-				<pathelement location="${lib.dir}/commons-codec-${commons-codec.version}.jar" />
-				<pathelement location="${lib.dir}/commons-io-${commons-io.version}.jar" />
-				<pathelement location="${lib.dir}/commons-lang-${commons-lang.version}.jar" />
-				<pathelement location="${lib.dir}/bridge-method-annotation-${bridge-method-annotation.version}.jar" />
-				<pathelement location="${lib.dir}/okhttp-${okhttp.version}.jar" />
+				<pathelement location="${conf.dir}"/>
 			</classpath>
 		</java>
  	</target>
