@@ -17,6 +17,7 @@
 package com.mebigfatguy.githublistener;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -42,6 +43,8 @@ public class CassandraWriter implements Runnable {
 	private PreparedStatement addUserEventPS;
 	private PreparedStatement incProjectDayCountPS;
 	private PreparedStatement incUserDayCountPS;
+	private PreparedStatement incProjectWeekCountPS;
+	private PreparedStatement incUserWeekCountPS;
 	
 	public CassandraWriter(ArrayBlockingQueue<GHEventInfo> queue, Cluster cluster, int replicationFactor) {
 		eventQueue = queue;
@@ -59,12 +62,18 @@ public class CassandraWriter implements Runnable {
 				Date date = event.getCreatedAt();
 				String project = event.getRepository().getName();
 				String user = event.getActorLogin();
-				session.execute(addProjectEventPS.bind(project, user, date, event.getType().name()));
-				session.execute(addUserEventPS.bind(user, project, date, event.getType().name()));
+				String eventType = (event.getType() == null) ? "" : event.getType().name();
+				
+				session.execute(addProjectEventPS.bind(project, user, date, eventType));
+				session.execute(addUserEventPS.bind(user, project, date, eventType));
 
 				Date day = new DateTime(date).withTimeAtStartOfDay().toDate();
 				session.execute(incProjectDayCountPS.bind(project, day));
 				session.execute(incUserDayCountPS.bind(user, day));
+				
+				Date week = new DateTime(day).withDayOfWeek(Calendar.SUNDAY).toDate();
+				session.execute(incProjectWeekCountPS.bind(project, week));
+				session.execute(incUserWeekCountPS.bind(user, week));
 			
 			} catch (IOException ioe) {
 				LOGGER.error("Failed writing events to cassandra", ioe);
@@ -87,8 +96,10 @@ public class CassandraWriter implements Runnable {
 		        try {
 		            session.execute("CREATE TABLE github.project_events (project text, user text, date_time timestamp, type text, primary key(project, user))");
 		            session.execute("CREATE TABLE github.user_events (user text, project text, date_time timestamp, type text, primary key(user, project))");
-		            session.execute("CREATE TABLE github.project_day_counts (project text, date timestamp, count counter, primary key (project, date)) WITH CLUSTERING ORDER BY (date DESC)");
-		            session.execute("CREATE TABLE github.user_day_counts (user text, date timestamp, count counter, primary key (user, date)) WITH CLUSTERING ORDER BY (date DESC)");
+		            session.execute("CREATE TABLE github.project_day_counts (project text, date timestamp, count counter, primary key (date, project))");
+		            session.execute("CREATE TABLE github.user_day_counts (user text, date timestamp, count counter, primary key (date, user))");
+		            session.execute("CREATE TABLE github.project_week_counts (project text, date timestamp, count counter, primary key (date, project))");
+		            session.execute("CREATE TABLE github.user_week_counts (user text, date timestamp, count counter, primary key (date, user))");
 		        } catch (AlreadyExistsException aee) {
 		        } catch (Exception e) {
 		        	e.printStackTrace();
@@ -104,5 +115,8 @@ public class CassandraWriter implements Runnable {
         addUserEventPS = session.prepare("insert into github.user_events (user, project, date_time, type) values (?,?,?,?)");
     	incProjectDayCountPS = session.prepare("update github.project_day_counts set count = count + 1 where project = ? and date = ?");	
     	incUserDayCountPS = session.prepare("update github.user_day_counts set count = count + 1 where user = ? and date = ?");
+    	incProjectWeekCountPS = session.prepare("update github.project_week_counts set count = count + 1 where project = ? and date = ?");	
+    	incUserWeekCountPS = session.prepare("update github.user_week_counts set count = count + 1 where user = ? and date = ?");
+
 	}
 }
