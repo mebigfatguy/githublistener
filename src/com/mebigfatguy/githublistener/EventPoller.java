@@ -50,6 +50,7 @@ public class EventPoller implements Runnable {
 			try {
 				List<GHEventInfo> currentEvents = github.getEvents();
 				eventQueue.addAll(currentEvents);
+				LOGGER.info("Event queue size is {}", eventQueue.size());
 				Thread.sleep(POLL_TIME);
 			} catch (InterruptedException e) {
 				return;

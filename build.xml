@@ -42,6 +42,8 @@
         <pathelement location="${lib.dir}/cassandra-all-${cassandra-all.version}.jar" />
         <pathelement location="${lib.dir}/snappy-java-${snappy-java.version}.jar" />
 		<pathelement location="${lib.dir}/slf4j-api-${slf4j-api.version}.jar" />
+		<pathelement location="${lib.dir}/logback-core-${logback-core.version}.jar" />
+		<pathelement location="${lib.dir}/logback-classic-${logback-classic.version}.jar" />
         <pathelement location="${lib.dir}/commons-cli-${commons-cli.version}.jar" />
         <pathelement location="${lib.dir}/guava-${guava.version}.jar" />
         <pathelement location="${lib.dir}/netty-${netty.version}.jar" />

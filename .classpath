@@ -23,5 +23,7 @@
 	<classpathentry kind="lib" path="lib/jackson-core-2.2.3.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-annotations-2.2.3.jar"/>
 	<classpathentry kind="lib" path="lib/joda-time-2.3.jar"/>
+	<classpathentry kind="lib" path="lib/logback-classic-1.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/logback-core-1.1.2.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
