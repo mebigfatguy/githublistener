@@ -31,7 +31,8 @@ import com.squareup.okhttp.OkHttpClient;
 public class EventPoller implements Runnable {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EventPoller.class);
-	private static final int POLL_TIME = (60 * 60 * 1000) / 6000;
+	private static final long POLL_TIME = (60L * 60L * 1000L) / 6000L;
+	private static final long FAILURE_SLEEP_TIME = 10L * 1000L;
 	
 	private final ArrayBlockingQueue<GHEventInfo> eventQueue;
 	private final GitHub github;
@@ -54,6 +55,13 @@ public class EventPoller implements Runnable {
 				return;
 			} catch (IOException ioe) {
 				LOGGER.error("Failed fetching events from github", ioe);
+			} catch (IllegalStateException ise) {
+				LOGGER.error("Failed queueing events from github - queue full", ise);
+				try {
+					Thread.sleep(FAILURE_SLEEP_TIME);
+				} catch (InterruptedException e) {
+					return;
+				}
 			}
 		}
 	}
