@@ -30,6 +30,7 @@ import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.exceptions.AlreadyExistsException;
+import com.datastax.driver.core.exceptions.NoHostAvailableException;
 
 public class CassandraWriter implements Runnable {
 
@@ -74,6 +75,8 @@ public class CassandraWriter implements Runnable {
 			
 			} catch (IOException ioe) {
 				LOGGER.error("Failed writing events to cassandra", ioe);
+			} catch (NoHostAvailableException nhae) {
+				LOGGER.error("Failed to find a cassandra host to write to", nhae);
 			} catch (InterruptedException ioe) {
 				return;
 			}
