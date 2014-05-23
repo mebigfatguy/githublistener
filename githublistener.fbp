@@ -2,7 +2,7 @@
   <Jar>./target/classes</Jar>
   <AuxClasspathEntry>./lib/bridge-method-annotation-1.12.jar</AuxClasspathEntry>
   <AuxClasspathEntry>./lib/cassandra-all-2.0.7.jar</AuxClasspathEntry>
-  <AuxClasspathEntry>./lib/cassandra-driver-core-2.0.1.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>./lib/cassandra-driver-core-2.0.2.jar</AuxClasspathEntry>
   <AuxClasspathEntry>./lib/commons-cli-1.2.jar</AuxClasspathEntry>
   <AuxClasspathEntry>./lib/commons-codec-1.7.jar</AuxClasspathEntry>
   <AuxClasspathEntry>./lib/commons-io-1.4.jar</AuxClasspathEntry>
