@@ -114,14 +114,14 @@ public class GitHubListener {
         
         String nw = cmdLine.getOptionValue(NUM_WRITERS);
         try {
-        	numWriters = Integer.valueOf(nw);
+        	numWriters = Integer.parseInt(nw);
         } catch (Exception e) {
         	numWriters = Runtime.getRuntime().availableProcessors();
         }
         
         String rf = cmdLine.getOptionValue(RF);
         try {
-        	replicationFactor = Integer.valueOf(rf);
+        	replicationFactor = Integer.parseInt(rf);
         } catch (Exception e) {
         	replicationFactor = 1;
         }
