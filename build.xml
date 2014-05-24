@@ -23,6 +23,7 @@
 	<property file="${basedir}/version.properties" />
 
 	<property name="src.dir" value="${basedir}/src" />
+	<property name="pages.dir" value="${basedir}/pages" />
 	<property name="conf.dir" value="${basedir}/conf" />
 	<property name="target.dir" value="${basedir}/target" />
 	<property name="war.dir" value="${target.dir}/war"/>
@@ -99,6 +100,11 @@
 		<copy todir="${web-inf-lib.dir}">
 			<fileset dir="${lib.dir}">
 				<include name="**/*.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="${war.dir}">
+			<fileset dir="${pages.dir}">
+				<include name="**/*"/>
 			</fileset>
 		</copy>
 	</target>
