@@ -26,7 +26,8 @@
 	<property name="pages.dir" value="${basedir}/pages" />
 	<property name="conf.dir" value="${basedir}/conf" />
 	<property name="target.dir" value="${basedir}/target" />
-	<property name="war.dir" value="${target.dir}/war"/>
+	<property name="war.dir" value="${target.dir}/war" />
+	<property name="js.dir" value="${war.dir}/js" />
 	<property name="web-inf.dir" value="${war.dir}/WEB-INF" />
 	<property name="web-inf-lib.dir" value="${web-inf.dir}/lib" />
 	<property name="classes.dir" value="${web-inf.dir}/classes" />
@@ -88,6 +89,10 @@
             <server url="http://repo1.maven.org/maven2" />
             <generateVersions propertyFileName="${basedir}/version.properties" />
         </yank:yank>
+		<!-- figure out a better way to pull javascript stuff -->
+		<mkdir dir="${js.dir}" />
+		<get src="http://getbootstrap.com/2.3.2/assets/bootstrap.zip" dest="${js.dir}" />
+		<get src="http://code.jquery.com/jquery-1.11.1.min.js" dest="${js.dir}" />
     </target>
 
 	<target name="-init" depends="yank" description="prepares repository for a build">
