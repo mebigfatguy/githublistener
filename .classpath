@@ -28,5 +28,6 @@
 	<classpathentry kind="lib" path="lib/github-api-1.53.jar"/>
 	<classpathentry kind="lib" path="lib/cassandra-driver-core-2.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/javax.servlet-api-3.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/jersey-core-1.18.1.jar"/>
 	<classpathentry kind="output" path="target/war/WEB-INF/classes"/>
 </classpath>

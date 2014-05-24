@@ -11,7 +11,7 @@
 	</session-config>
 
 	<listener>
-		<listener-class>com.mebigfatguy.githublistener.WebAppContextListener</listener-class>
+		<listener-class>com.mebigfatguy.githublistener.rest.WebAppContextListener</listener-class>
 	</listener>
 
 	<servlet>
