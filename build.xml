@@ -25,7 +25,10 @@
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="conf.dir" value="${basedir}/conf" />
 	<property name="target.dir" value="${basedir}/target" />
-	<property name="classes.dir" value="${target.dir}/classes" />
+	<property name="war.dir" value="${target.dir}/war"/>
+	<property name="web-inf.dir" value="${war.dir}/WEB-INF" />
+	<property name="web-inf-lib.dir" value="${web-inf.dir}/lib" />
+	<property name="classes.dir" value="${web-inf.dir}/classes" />
 	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="javadoc.dir" value="${target.dir}/javadoc" />
 	<property name="javac.source" value="1.7" />
@@ -83,11 +86,23 @@
     </target>
 
 	<target name="-init" depends="yank" description="prepares repository for a build">
+		<mkdir dir="${war.dir}" />
+		<mkdir dir="${web-inf.dir}" />
+		<mkdir dir="${web-inf-lib.dir}" />
 		<mkdir dir="${classes.dir}" />
 		<mkdir dir="${javadoc.dir}" />
 		<mkdir dir="${lib.dir}" />
 	</target>
 
+	<target name="resources" depends="-init" description="copies resources to the war">
+		<copy todir="${web-inf.dir}" file="${conf.dir}/web.xml"/>
+		<copy todir="${web-inf-lib.dir}">
+			<fileset dir="${lib.dir}">
+				<include name="**/*.jar"/>
+			</fileset>
+		</copy>
+	</target>
+		
 	<target name="compile" depends="-init" description="compiles java files">
 		<javac srcdir="${src.dir}" destdir="${classes.dir}" source="${javac.source}"
 			target="${javac.target}" deprecation="${javac.deprecation}" debug="${javac.debug}"
@@ -101,11 +116,9 @@
 			basedir="${basedir}">
 			<fileset dir="${src.dir}">
 				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${conf.dir}">
 				<include name="**/*.xml" />
-				<include name="**/*.xsd" />
-				<include name="**/*.license" />
-				<include name="**/*.txt" />
-				<include name="lib/*.jar" />
 			</fileset>
 		</zip>
 	</target>
@@ -120,18 +133,17 @@
 		</javadoc>
 	</target>
 
-	<target name="build" depends="clean, -init, compile"
+	<target name="build" depends="clean, -init, resources, compile"
 		description="compiles the code">
 	</target>
 
-	<target name="jar" depends="build" description="produces the githublistener jar file">
-		<jar destfile="${target.dir}/githublistener-${githublistener.version}.jar">
-			<fileset dir="${classes.dir}">
-				<include name="**/*.class" />
+	<target name="war" depends="build" description="produces the githublistener war file">
+		<jar destfile="${target.dir}/githublistener-${githublistener.version}.war">
+			<fileset dir="${war.dir}">
+				<include name="**/*" />
 			</fileset>
 			<manifest>
 				<attribute name="githublistener.version" value="${githublistener.version}" />
-                <attribute name="Main-Class" value="com.mebigfatguy.githublistener.GitHubListener"/>
 				<attribute name="Application-Name" value="githublistener" />
                 <attribute name="Permissions" value="all-permissions" />
                 <attribute name="Codebase" value="*" />
@@ -146,20 +158,6 @@
 		</jar>
 	</target>
 
-	<target name="release" depends="build, srczip, javadoc"
-		description="prepares everything for a release" />
+	<target name="release" depends="build, srczip, javadoc" description="prepares everything for a release" />
 
-	<target name="run" depends="jar" description="run githublistener against cassandra on localhost">
-		<java classname="com.mebigfatguy.githublistener.GitHubListener" fork="true" maxmemory="256m">
-            <arg value="-username"/>
-            <arg value="${username}"/>
-            <arg value="-authtoken"/>
-            <arg value="${authtoken}"/>
-			<classpath>
-				<path refid="githublistener.classpath"/>
-				<pathelement location="${target.dir}/githublistener-${githublistener.version}.jar"/>
-				<pathelement location="${conf.dir}"/>
-			</classpath>
-		</java>
- 	</target>
 </project>

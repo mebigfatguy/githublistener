@@ -2,4 +2,6 @@ classes
 version.properties
 user.properties
 *.jar
+*.war
+/target
 
