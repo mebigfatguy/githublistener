@@ -68,6 +68,7 @@
 		<pathelement location="${lib.dir}/okhttp-${okhttp.version}.jar" />
 		<pathelement location="${lib.dir}/joda-time-${joda-time.version}.jar" />
 		<pathelement location="${lib.dir}/lzr-${lzr.version}.jar" />
+		<pathelement location="${lib.dir}/javax.servlet-api-${javax.servlet-api.version}.jar" />
 	</path>
 	
 	<target name="info">
@@ -100,6 +101,7 @@
 		<copy todir="${web-inf-lib.dir}">
 			<fileset dir="${lib.dir}">
 				<include name="**/*.jar"/>
+				<exclude name="**/javax.servlet-api-${javax.servlet-api.version}.jar"/>
 			</fileset>
 		</copy>
 		<copy todir="${war.dir}">

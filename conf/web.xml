@@ -10,6 +10,10 @@
 		<session-timeout>60</session-timeout>
 	</session-config>
 
+	<listener>
+		<listener-class>com.mebigfatguy.githublistener.WebAppContextListener</listener-class>
+	</listener>
+
 	<servlet>
 		<servlet-name>Jersey REST Service</servlet-name>
 		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
