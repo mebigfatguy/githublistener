@@ -69,6 +69,9 @@
 		<pathelement location="${lib.dir}/joda-time-${joda-time.version}.jar" />
 		<pathelement location="${lib.dir}/lzr-${lzr.version}.jar" />
 		<pathelement location="${lib.dir}/javax.servlet-api-${javax.servlet-api.version}.jar" />
+		<pathelement location="${lib.dir}/jersey-core-${jersey-core.version}.jar" />
+		<pathelement location="${lib.dir}/jersey-servlet-${jersey-servlet.version}.jar" />
+		<pathelement location="${lib.dir}/jersey-bundle-${jersey-bundle.version}.jar" />
 	</path>
 	
 	<target name="info">
@@ -166,6 +169,6 @@
 		</jar>
 	</target>
 
-	<target name="release" depends="build, srczip, javadoc" description="prepares everything for a release" />
+	<target name="release" depends="war, srczip, javadoc" description="prepares everything for a release" />
 
 </project>
