@@ -16,16 +16,69 @@
   */ 
 package com.mebigfatguy.githublistener.rest;
 
+import java.io.IOException;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.kohsuke.github.GHEventInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.datastax.driver.core.Cluster;
+import com.mebigfatguy.githublistener.CassandraWriter;
+import com.mebigfatguy.githublistener.EventPoller;
+
 public class WebAppContextListener implements ServletContextListener {
 
-	@Override
-	public void contextDestroyed(ServletContextEvent arg0) {
-	}
+	private static final Logger LOGGER = LoggerFactory.getLogger(WebAppContextListener.class);
+	
+	private ExecutorService pool = null;
+	private ArrayBlockingQueue<GHEventInfo> queue;
+	private Cluster cluster;
+	private String userName;
+	private String authToken;
 
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
+		try {
+			//read pool size from jndi
+			//read username from jndi
+			//read authtoken from jndi
+			//read endpoints from jndi
+			
+			cluster = new Cluster.Builder().addContactPoints("127.0.0.1").build();
+			
+			pool = Executors.newFixedThreadPool(10);
+			
+			queue = new ArrayBlockingQueue<GHEventInfo>(10000);
+			
+			EventPoller ep = new EventPoller(queue, userName, authToken);
+			pool.submit(ep);
+			
+			for (int i = 0; i < 4; i++) {
+				CassandraWriter cw = new CassandraWriter(queue, cluster, 1);
+				pool.submit(cw);
+			}	
+			
+		} catch (IOException ioe) {
+			LOGGER.error("Failed to initialize event poller", ioe);
+		}
+	}
+	
+	@Override
+	public void contextDestroyed(ServletContextEvent arg0) {
+		try {
+			pool.shutdown();
+			cluster.close();
+			queue.clear();
+		} finally {
+			pool = null;
+			cluster = null;
+			queue = null;
+		}
 	}
 }
