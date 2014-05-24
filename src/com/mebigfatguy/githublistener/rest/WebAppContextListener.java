@@ -21,6 +21,9 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -39,31 +42,34 @@ public class WebAppContextListener implements ServletContextListener {
 	private ExecutorService pool = null;
 	private ArrayBlockingQueue<GHEventInfo> queue;
 	private Cluster cluster;
-	private String userName;
-	private String authToken;
 
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
 		try {
-			//read pool size from jndi
-			//read username from jndi
-			//read authtoken from jndi
-			//read endpoints from jndi
+			Context ic = new InitialContext();
+			Context envContext = (Context)ic.lookup("java:/comp/env");
 			
-			cluster = new Cluster.Builder().addContactPoints("127.0.0.1").build();
+			String endPoints = (String) envContext.lookup("endpoints");
+			cluster = new Cluster.Builder().addContactPoints(endPoints.split(",")).build();
 			
-			pool = Executors.newFixedThreadPool(10);
+			int numWriters = (Integer) envContext.lookup("numwriters");
+			pool = Executors.newFixedThreadPool(numWriters + 1);
 			
 			queue = new ArrayBlockingQueue<GHEventInfo>(10000);
 			
+			String userName = (String) envContext.lookup("username");
+			String authToken = (String) envContext.lookup("authtoken");
 			EventPoller ep = new EventPoller(queue, userName, authToken);
 			pool.submit(ep);
 			
-			for (int i = 0; i < 4; i++) {
-				CassandraWriter cw = new CassandraWriter(queue, cluster, 1);
+			int replicationFactor = (Integer) envContext.lookup("replicationfactor");
+			
+			for (int i = 0; i < numWriters; i++) {
+				CassandraWriter cw = new CassandraWriter(queue, cluster, replicationFactor);
 				pool.submit(cw);
 			}	
-			
+		} catch (NamingException ne) {
+			LOGGER.error("Failed looking up environment properties through jndi", ne);
 		} catch (IOException ioe) {
 			LOGGER.error("Failed to initialize event poller", ioe);
 		}
