@@ -32,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Session;
 import com.mebigfatguy.githublistener.CassandraWriter;
 import com.mebigfatguy.githublistener.EventPoller;
 
@@ -42,15 +43,17 @@ public class WebAppContextListener implements ServletContextListener {
 	private ExecutorService pool = null;
 	private ArrayBlockingQueue<GHEventInfo> queue;
 	private Cluster cluster;
+	private Session session;
 
 	@Override
-	public void contextInitialized(ServletContextEvent arg0) {
+	public void contextInitialized(ServletContextEvent event) {
 		try {
 			Context ic = new InitialContext();
 			Context envContext = (Context)ic.lookup("java:/comp/env");
 			
 			String endPoints = (String) envContext.lookup("endpoints");
 			cluster = new Cluster.Builder().addContactPoints(endPoints.split(",")).build();
+			session = cluster.connect();
 			
 			int numWriters = (Integer) envContext.lookup("numwriters");
 			pool = Executors.newFixedThreadPool(numWriters + 1);
@@ -65,9 +68,11 @@ public class WebAppContextListener implements ServletContextListener {
 			int replicationFactor = (Integer) envContext.lookup("replicationfactor");
 			
 			for (int i = 0; i < numWriters; i++) {
-				CassandraWriter cw = new CassandraWriter(queue, cluster, replicationFactor);
+				CassandraWriter cw = new CassandraWriter(queue, session, replicationFactor);
 				pool.submit(cw);
 			}	
+			
+			event.getServletContext().setAttribute("session", session);
 		} catch (NamingException ne) {
 			LOGGER.error("Failed looking up environment properties through jndi", ne);
 		} catch (IOException ioe) {
@@ -76,13 +81,15 @@ public class WebAppContextListener implements ServletContextListener {
 	}
 	
 	@Override
-	public void contextDestroyed(ServletContextEvent arg0) {
+	public void contextDestroyed(ServletContextEvent event) {
 		try {
-			pool.shutdown();
+			pool.shutdownNow();
+			session.close();
 			cluster.close();
 			queue.clear();
 		} finally {
 			pool = null;
+			session = null;
 			cluster = null;
 			queue = null;
 		}

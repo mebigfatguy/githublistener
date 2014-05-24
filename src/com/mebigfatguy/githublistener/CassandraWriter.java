@@ -38,18 +38,18 @@ public class CassandraWriter implements Runnable {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CassandraWriter.class);
 	private static final Object LOCK = new Object();
 	private static boolean IS_INITIALIZED = false;
-	private static Session session;
 	private static PreparedStatement addBatchEventPS;
 	private static PreparedStatement incBatchCountPS;
 	
+	private Session session;
 	private final ArrayBlockingQueue<GHEventInfo> eventQueue;
 	
-	public CassandraWriter(ArrayBlockingQueue<GHEventInfo> queue, Cluster cluster, int replicationFactor) {
+	public CassandraWriter(ArrayBlockingQueue<GHEventInfo> queue, Session cSession, int replicationFactor) {
 		eventQueue = queue;
+		session = cSession;
 		
 		synchronized(LOCK) {
 			if (!IS_INITIALIZED) {
-				session = cluster.connect();
 				setUpSchema(replicationFactor);
 				setUpStatements();
 				IS_INITIALIZED = true;
