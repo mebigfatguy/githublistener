@@ -25,6 +25,7 @@
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="pages.dir" value="${basedir}/pages" />
 	<property name="conf.dir" value="${basedir}/conf" />
+	<property name="bootstrap.dir" value="${conf.dir}/bootstrap" />
 	<property name="target.dir" value="${basedir}/target" />
 	<property name="war.dir" value="${target.dir}/war" />
 	<property name="js.dir" value="${war.dir}/js" />
@@ -90,9 +91,6 @@
             <generateVersions propertyFileName="${basedir}/version.properties" />
         </yank:yank>
 		<!-- figure out a better way to pull javascript stuff -->
-		<mkdir dir="${js.dir}" />
-		<get src="http://getbootstrap.com/2.3.2/assets/bootstrap.zip" dest="${js.dir}" />
-		<get src="http://code.jquery.com/jquery-1.11.1.min.js" dest="${js.dir}" />
     </target>
 
 	<target name="-init" depends="yank" description="prepares repository for a build">
@@ -116,7 +114,11 @@
 			<fileset dir="${pages.dir}">
 				<include name="**/*"/>
 			</fileset>
+			<fileset dir="${bootstrap.dir}">
+				<include name="**/*"/>
+			</fileset>
 		</copy>
+		
 	</target>
 		
 	<target name="compile" depends="-init" description="compiles java files">
