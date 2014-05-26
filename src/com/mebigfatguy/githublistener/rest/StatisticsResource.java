@@ -29,4 +29,46 @@ public class StatisticsResource {
 	public String status() {
 		return "Statistics REST resource is operational";
 	}
+	
+	@GET
+	@Path("/projects/month")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTopProjectsByMonth() {
+		return "";
+	}
+	
+	@GET
+	@Path("/projects/week")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTopProjectsByWeek() {
+		return "";
+	}
+	
+	@GET
+	@Path("/projects/day")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTopProjectsByDay() {
+		return "";
+	}
+	
+	@GET
+	@Path("/users/month")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTopUsersByMonth() {
+		return "";
+	}
+	
+	@GET
+	@Path("/users/week")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTopUsersByWeek() {
+		return "";
+	}
+	
+	@GET
+	@Path("/users/day")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTopUsersByDay() {
+		return "";
+	}
 }
