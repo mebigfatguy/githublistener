@@ -63,6 +63,8 @@
 		<pathelement location="${lib.dir}/github-api-${github-api.version}.jar" />
 		<pathelement location="${lib.dir}/jackson-databind-${jackson-databind.version}.jar" />
 		<pathelement location="${lib.dir}/jackson-core-${jackson-core.version}.jar" />
+		<pathelement location="${lib.dir}/jackson-jaxrs-${jackson-jaxrs.version}.jar" />
+		<pathelement location="${lib.dir}/jackson-xc-${jackson-xc.version}.jar" />
 		<pathelement location="${lib.dir}/jackson-annotations-${jackson-annotations.version}.jar" />
 		<pathelement location="${lib.dir}/commons-codec-${commons-codec.version}.jar" />
 		<pathelement location="${lib.dir}/commons-io-${commons-io.version}.jar" />

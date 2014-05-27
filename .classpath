@@ -32,5 +32,7 @@
 	<classpathentry kind="lib" path="lib/jersey-bundle-1.18.1.jar" sourcepath="lib/jersey-bundle-1.18.1.jar"/>
 	<classpathentry kind="lib" path="lib/jersey-servlet-1.18.1.jar" sourcepath="lib/sources/jersey-servlet-1.18.1-sources.jar"/>
 	<classpathentry kind="lib" path="lib/jersey-json-1.18.1.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-jaxrs-1.9.13.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-xc-1.9.13.jar"/>
 	<classpathentry kind="output" path="target/war/WEB-INF/classes"/>
 </classpath>

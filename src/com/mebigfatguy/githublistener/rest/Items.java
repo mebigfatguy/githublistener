@@ -1,8 +1,8 @@
 package com.mebigfatguy.githublistener.rest;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonSerialize
+@XmlRootElement()
 public class Items {
 
 	private ItemCount[] itemCount;
