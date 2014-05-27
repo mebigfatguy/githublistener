@@ -9,6 +9,11 @@ $(document).ready(function() {
 function loadStatistics(type, period) {
 	$.getJSON(window.location.href + "rest/statistics/" + type + "/" + period,
 			   function(data) {
-			     alert("here it is-> " + data);         
+			     var tbl = $('table.table');
+				 tbl.empty();
+				 tbl.append("<tr><th>" + type + "</th><th>Count by " + period + "</th></tr>");
+				 $.each(data.items, function(index, element) {
+					 tbl.append("<tr><td>" + element.name + "</td><td>" + element.count + "</td></tr>");
+				 });
 			   });
 }
