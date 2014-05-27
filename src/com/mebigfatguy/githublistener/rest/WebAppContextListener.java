@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
 import com.mebigfatguy.githublistener.CassandraWriter;
+import com.mebigfatguy.githublistener.DaemonThreadFactory;
 import com.mebigfatguy.githublistener.EventPoller;
 
 public class WebAppContextListener implements ServletContextListener {
@@ -56,7 +57,7 @@ public class WebAppContextListener implements ServletContextListener {
 			session = cluster.connect();
 			
 			int numWriters = (Integer) envContext.lookup("numwriters");
-			pool = Executors.newFixedThreadPool(numWriters + 1);
+			pool = Executors.newFixedThreadPool(numWriters + 1, new DaemonThreadFactory("githublistener"));
 			
 			queue = new ArrayBlockingQueue<GHEventInfo>(10000);
 			

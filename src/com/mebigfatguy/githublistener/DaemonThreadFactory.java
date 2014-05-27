@@ -14,25 +14,24 @@
   * See the License for the specific language governing permissions and limitations 
   * under the License. 
   */ 
-package com.mebigfatguy.githublistener.rest;
+package com.mebigfatguy.githublistener;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 
-@XmlRootElement()
-public class Items {
+public class DaemonThreadFactory implements ThreadFactory {
 
-	private ItemCount[] itemCount;
-
-	public ItemCount[] getItems() {
-		if (itemCount == null)
-			itemCount = new ItemCount[0];
-		
-		return itemCount;
-	}
-
-	public void setItems(ItemCount... items) {
-		itemCount = items;
+	private String threadName;
+	private AtomicInteger threadNum = new AtomicInteger(0);
+	public DaemonThreadFactory(String threadNameBase) {
+		threadName = threadNameBase;
 	}
 	
-	
+	@Override
+	public Thread newThread(Runnable r) {
+		Thread t = new Thread();
+		t.setDaemon(true);
+		t.setName(threadName + threadNum.addAndGet(1));
+		return t;
+	}
 }
