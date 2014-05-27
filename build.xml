@@ -75,6 +75,7 @@
 		<pathelement location="${lib.dir}/jersey-core-${jersey-core.version}.jar" />
 		<pathelement location="${lib.dir}/jersey-servlet-${jersey-servlet.version}.jar" />
 		<pathelement location="${lib.dir}/jersey-bundle-${jersey-bundle.version}.jar" />
+		<pathelement location="${lib.dir}/jersey-json-${jersey-json.version}.jar" />
 	</path>
 	
 	<target name="info">

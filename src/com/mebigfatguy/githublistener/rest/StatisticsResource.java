@@ -23,18 +23,17 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/statistics")
 public class StatisticsResource {
-
-	@GET
-	@Produces(MediaType.TEXT_PLAIN)
-	public String status() {
-		return "Statistics REST resource is operational";
-	}
 	
 	@GET
 	@Path("/projects/month")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getTopProjectsByMonth() {
-		return "{projects:[{\"proj1\":10},{\"proj2\":9}]}";
+	public Items getTopProjectsByMonth() {
+		Items items = new Items();
+		ItemCount item = new ItemCount();
+		item.setName("proj1");
+		item.setCount(20);
+		items.setItems(item);
+		return items;
 	}
 	
 	@GET

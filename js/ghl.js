@@ -7,7 +7,7 @@ $(document).ready(function() {
 });
 
 function loadStatistics(type, period) {
-	$.getJSON(window.location.href + "statistics/" + type + "/" + period + "?callback=?",
+	$.getJSON(window.location.href + "rest/statistics/" + type + "/" + period + "?callback=?",
 			   function(data) {
 			     alert("here it is-> " + data);         
 			   });
