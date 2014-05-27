@@ -28,12 +28,11 @@ public class StatisticsResource {
 	@Path("/projects/month")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Items getTopProjectsByMonth() {
-		Items items = new Items();
 		ItemCount item = new ItemCount();
 		item.setName("proj1");
 		item.setCount(20);
-		items.setItems(item);
-		return items;
+		
+		return new Items("Projects", "Count By Month", item);
 	}
 	
 	@GET

@@ -21,7 +21,34 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement()
 public class Items {
 
+	private String groupName;
+	private String countName;
 	private ItemCount[] itemCount;
+	
+	public Items() {
+	}
+	
+	public Items(String groupName, String countName, ItemCount...itemCount) {
+		this.groupName = groupName;
+		this.countName = countName;
+		this.itemCount = itemCount;
+	}
+	
+	public String getGroupName() {
+		return groupName;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+
+	public String getCountName() {
+		return countName;
+	}
+
+	public void setCountName(String countName) {
+		this.countName = countName;
+	}
 
 	public ItemCount[] getItems() {
 		if (itemCount == null)

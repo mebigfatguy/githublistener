@@ -11,7 +11,7 @@ function loadStatistics(type, period) {
 			   function(data) {
 			     var tbl = $('table.table');
 				 tbl.empty();
-				 tbl.append("<tr><th>" + type + "</th><th>Count by " + period + "</th></tr>");
+				 tbl.append("<tr><th>" + data.groupName + "</th><th>" + data.countName + "</th></tr>");
 				 $.each(data.items, function(index, element) {
 					 tbl.append("<tr><td>" + element.name + "</td><td>" + element.count + "</td></tr>");
 				 });
