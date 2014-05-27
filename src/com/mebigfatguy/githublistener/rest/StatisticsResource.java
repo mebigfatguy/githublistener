@@ -16,23 +16,29 @@
  */
 package com.mebigfatguy.githublistener.rest;
 
+import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+
+import com.datastax.driver.core.Session;
+import com.mebigfatguy.githublistener.CassandraReader;
 
 @Path("/statistics")
 public class StatisticsResource {
+	
+	@Context 
+	ServletContext context;
 	
 	@GET
 	@Path("/projects/month")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Items getTopProjectsByMonth() {
-		ItemCount item = new ItemCount();
-		item.setName("proj1");
-		item.setCount(20);
+		CassandraReader reader = new CassandraReader((Session) context.getAttribute("session"));
 		
-		return new Items("Projects", "Count By Month", item);
+		return new Items("Projects", "Count By Month", reader.getTopProjectsByMonth());
 	}
 	
 	@GET
