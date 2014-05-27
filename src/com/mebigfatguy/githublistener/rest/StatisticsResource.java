@@ -34,7 +34,7 @@ public class StatisticsResource {
 	@Path("/projects/month")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getTopProjectsByMonth() {
-		return "";
+		return "{projects:[{\"proj1\":10},{\"proj2\":9}]}";
 	}
 	
 	@GET
