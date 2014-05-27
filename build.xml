@@ -24,6 +24,7 @@
 
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="pages.dir" value="${basedir}/pages" />
+	<property name="js.dir" value="${basedir}/js" />
 	<property name="conf.dir" value="${basedir}/conf" />
 	<property name="bootstrap.dir" value="${conf.dir}/bootstrap" />
 	<property name="target.dir" value="${basedir}/target" />
@@ -114,11 +115,16 @@
 			<fileset dir="${pages.dir}">
 				<include name="**/*"/>
 			</fileset>
+
 			<fileset dir="${bootstrap.dir}">
 				<include name="**/*"/>
 			</fileset>
 		</copy>
-		
+		<copy todir="${war.dir}/js">
+			<fileset dir="${js.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
 	</target>
 		
 	<target name="compile" depends="-init" description="compiles java files">
