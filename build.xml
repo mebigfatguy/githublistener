@@ -169,19 +169,6 @@
 			<fileset dir="${war.dir}">
 				<include name="**/*" />
 			</fileset>
-			<manifest>
-				<attribute name="githublistener.version" value="${githublistener.version}" />
-				<attribute name="Application-Name" value="githublistener" />
-                <attribute name="Permissions" value="all-permissions" />
-                <attribute name="Codebase" value="*" />
-				<attribute name="Bundle-ManifestVersion" value="2" />
-				<attribute name="Bundle-Name" value="githublistener plugin" />
-				<attribute name="Bundle-SymbolicName" value="githublistener; singleton:=true" />
-				<attribute name="Bundle.version" value="${githublistener.version}" />
-				<attribute name="Bundle-ClassPath" value="." />
-				<attribute name="Bundle-Vendor" value="githublistener project" />
-				<attribute name="Bundle-ActivationPolicy" value="lazy" />
-			</manifest>
 		</jar>
 	</target>
 
