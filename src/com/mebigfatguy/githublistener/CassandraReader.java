@@ -34,4 +34,44 @@ public class CassandraReader {
 		
 		return new ItemCount[] { item };
 	}
+
+	public ItemCount[] getTopProjectsByWeek() {
+		ItemCount item = new ItemCount();
+		item.setName("proj1");
+		item.setCount(20);
+		
+		return new ItemCount[] { item };
+	}
+
+	public ItemCount[] getTopProjectsByDay() {
+		ItemCount item = new ItemCount();
+		item.setName("proj1");
+		item.setCount(20);
+		
+		return new ItemCount[] { item };
+	}
+
+	public ItemCount[] getTopUsersByMonth() {
+		ItemCount item = new ItemCount();
+		item.setName("user1");
+		item.setCount(20);
+		
+		return new ItemCount[] { item };
+	}
+
+	public ItemCount[] getTopUsersByWeek() {
+		ItemCount item = new ItemCount();
+		item.setName("user1");
+		item.setCount(20);
+		
+		return new ItemCount[] { item };
+	}
+
+	public ItemCount[] getTopUsersByDay() {
+		ItemCount item = new ItemCount();
+		item.setName("user1");
+		item.setCount(20);
+		
+		return new ItemCount[] { item };
+	}
 }

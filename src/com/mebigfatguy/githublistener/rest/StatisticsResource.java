@@ -44,35 +44,45 @@ public class StatisticsResource {
 	@GET
 	@Path("/projects/week")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getTopProjectsByWeek() {
-		return "";
+	public Items getTopProjectsByWeek() {
+		CassandraReader reader = new CassandraReader((Session) context.getAttribute("session"));
+		
+		return new Items("Projects", "Count By Week", reader.getTopProjectsByWeek());
 	}
 	
 	@GET
 	@Path("/projects/day")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getTopProjectsByDay() {
-		return "";
+	public Items getTopProjectsByDay() {
+		CassandraReader reader = new CassandraReader((Session) context.getAttribute("session"));
+		
+		return new Items("Projects", "Count By Day", reader.getTopProjectsByDay());
 	}
 	
 	@GET
 	@Path("/users/month")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getTopUsersByMonth() {
-		return "";
+	public Items getTopUsersByMonth() {
+		CassandraReader reader = new CassandraReader((Session) context.getAttribute("session"));
+		
+		return new Items("Users", "Count By Month", reader.getTopUsersByMonth());
 	}
 	
 	@GET
 	@Path("/users/week")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getTopUsersByWeek() {
-		return "";
+	public Items getTopUsersByWeek() {
+		CassandraReader reader = new CassandraReader((Session) context.getAttribute("session"));
+		
+		return new Items("Users", "Count By Week", reader.getTopUsersByWeek());
 	}
 	
 	@GET
 	@Path("/users/day")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getTopUsersByDay() {
-		return "";
+	public Items getTopUsersByDay() {
+		CassandraReader reader = new CassandraReader((Session) context.getAttribute("session"));
+		
+		return new Items("Users", "Count By Day", reader.getTopUsersByDay());
 	}
 }
