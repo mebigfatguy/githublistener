@@ -25,3 +25,10 @@ with the contents
     </Context>
 
 Or with the settings you would like.
+
+
+Pointing your browser then at
+
+http://localhost;8008/githublistener will give you the statistics page that you can pull the information from.
+
+The Github api seems a bit flaky with regards to pulling events, sometimes it flows normally, sometimes it appears the call hangs up a bit on their servers. Not sure what is going on there.
