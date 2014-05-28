@@ -41,7 +41,7 @@ public class CassandraModel {
 	
 	public CassandraModel(String[] endPoints, int replicationFactor) {
 		
-		Cluster cluster = new Cluster.Builder().addContactPoints(endPoints).build();
+		cluster = new Cluster.Builder().addContactPoints(endPoints).build();
 		session = cluster.connect();
 
 		setUpSchema(replicationFactor);
@@ -111,6 +111,13 @@ public class CassandraModel {
 									"update github.user_month_counts set count = count + 1 where user = ? and date = ?" +
 									"APPLY BATCH"
 									);
+		
+		projectsByMonthPS = session.prepare("select project, count from project_month_counts");
+		projectsByWeekPS = session.prepare("select project, count from project_week_counts");
+		projectsByDayPS = session.prepare("select project, count from project_day_counts");
+		usersByMonthPS = session.prepare("select user, count from user_month_counts");
+		usersByWeekPS = session.prepare("select user, count from user_week_counts");
+		usersByDayPS = session.prepare("select user, count from user_day_counts");
 	}
 
 
