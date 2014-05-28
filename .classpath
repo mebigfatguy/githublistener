@@ -26,7 +26,7 @@
 	<classpathentry kind="lib" path="lib/logback-core-1.1.2.jar"/>
 	<classpathentry kind="lib" path="lib/lz4-1.2.0.jar"/>
 	<classpathentry kind="lib" path="lib/github-api-1.53.jar"/>
-	<classpathentry kind="lib" path="lib/cassandra-driver-core-2.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/cassandra-driver-core-2.0.2.jar" sourcepath="lib/sources/cassandra-driver-core-2.0.2-sources.jar"/>
 	<classpathentry kind="lib" path="lib/javax.servlet-api-3.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/jersey-core-1.18.1.jar"/>
 	<classpathentry kind="lib" path="lib/jersey-bundle-1.18.1.jar" sourcepath="lib/jersey-bundle-1.18.1.jar"/>

@@ -69,6 +69,10 @@ public class CassandraModel {
 		return incBatchCountPS;
 	}
 	
+	public PreparedStatement getProjectsByMonthPS() {
+		return projectsByMonthPS;
+	}
+	
 	private void setUpSchema(int replicationFactor) {
 
         try {
@@ -119,8 +123,4 @@ public class CassandraModel {
 		usersByWeekPS = session.prepare("select user, count from user_week_counts");
 		usersByDayPS = session.prepare("select user, count from user_day_counts");
 	}
-
-
-
-
 }

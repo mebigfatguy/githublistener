@@ -16,9 +16,18 @@
  */
 package com.mebigfatguy.githublistener;
 
-import com.mebigfatguy.githublistener.rest.ItemCount;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Row;
 
 public class CassandraReader {
+	
+	private static int ROWS_GUESSTIMATE = 1000;
+	private static int MAX_RESULTS = 25;
+	private static ItemCountComparator COMPARATOR = new ItemCountComparator();
 
 	private CassandraModel model;
 	
@@ -27,11 +36,8 @@ public class CassandraReader {
 	}
 	
 	public ItemCount[] getTopProjectsByMonth() {
-		ItemCount item = new ItemCount();
-		item.setName("proj1");
-		item.setCount(20);
-		
-		return new ItemCount[] { item };
+		ResultSet rs = model.getSession().execute(model.getProjectsByMonthPS().bind());
+		return sortTopItems(rs);
 	}
 
 	public ItemCount[] getTopProjectsByWeek() {
@@ -74,7 +80,18 @@ public class CassandraReader {
 		return new ItemCount[] { item };
 	}
 	
-	private void setUpStatements() {
+	public ItemCount[] sortTopItems(ResultSet rs) {
+		List<ItemCount> items = new ArrayList<ItemCount>(ROWS_GUESSTIMATE);
 		
+		for (Row row : rs) {
+			ItemCount item = new ItemCount(row.getString(0), row.getLong(1));
+			items.add(item);
+		}
+		
+		Collections.sort(items, COMPARATOR);
+		List<ItemCount> subList = items.subList(0,  MAX_RESULTS);
+		
+		return subList.toArray(new ItemCount[subList.size()]);
 	}
+
 }

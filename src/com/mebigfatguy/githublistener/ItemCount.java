@@ -14,12 +14,20 @@
   * See the License for the specific language governing permissions and limitations 
   * under the License. 
   */ 
-package com.mebigfatguy.githublistener.rest;
+package com.mebigfatguy.githublistener;
 
 public class ItemCount {
 
 	private String name;
-	private int count;
+	private long count;
+	
+	public ItemCount() {
+	}
+	
+	public ItemCount(String name, long count) {
+		this.name = name;
+		this.count = count;
+	}
 	
 	public String getName() {
 		return name;
@@ -29,11 +37,11 @@ public class ItemCount {
 		this.name = name;
 	}
 	
-	public int getCount() {
+	public long getCount() {
 		return count;
 	}
 	
-	public void setCount(int count) {
+	public void setCount(long count) {
 		this.count = count;
 	}
 }

@@ -18,6 +18,8 @@ package com.mebigfatguy.githublistener.rest;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.mebigfatguy.githublistener.ItemCount;
+
 @XmlRootElement()
 public class Items {
 
