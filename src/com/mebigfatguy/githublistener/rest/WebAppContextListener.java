@@ -18,8 +18,6 @@ package com.mebigfatguy.githublistener.rest;
 
 import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -33,14 +31,12 @@ import org.slf4j.LoggerFactory;
 
 import com.mebigfatguy.githublistener.CassandraModel;
 import com.mebigfatguy.githublistener.CassandraWriter;
-import com.mebigfatguy.githublistener.DaemonThreadFactory;
 import com.mebigfatguy.githublistener.EventPoller;
 
 public class WebAppContextListener implements ServletContextListener {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(WebAppContextListener.class);
 	
-	private ExecutorService pool = null;
 	private ArrayBlockingQueue<GHEventInfo> queue;
 	private CassandraModel model;
 
@@ -56,19 +52,17 @@ public class WebAppContextListener implements ServletContextListener {
 			model = new CassandraModel(endPoints.split(","), replicationFactor.intValue());
 			event.getServletContext().setAttribute("model", model);
 			
-			int numWriters = (Integer) envContext.lookup("numwriters");
-			pool = Executors.newFixedThreadPool(numWriters + 1, new DaemonThreadFactory("githublistener"));
-			
 			queue = new ArrayBlockingQueue<GHEventInfo>(10000);
 			
 			String userName = (String) envContext.lookup("username");
 			String authToken = (String) envContext.lookup("authtoken");
 			EventPoller ep = new EventPoller(queue, userName, authToken);
-			pool.submit(ep);
+			startDaemonThread(ep, "Event Poller");
 			
+			int numWriters = (Integer) envContext.lookup("numwriters");
 			for (int i = 0; i < numWriters; i++) {
 				CassandraWriter cw = new CassandraWriter(queue, model);
-				pool.submit(cw);
+				startDaemonThread(cw,  "Cassandra Writer " + (i + 1));
 			}
 		} catch (NamingException ne) {
 			LOGGER.error("Failed looking up environment properties through jndi", ne);
@@ -80,13 +74,18 @@ public class WebAppContextListener implements ServletContextListener {
 	@Override
 	public void contextDestroyed(ServletContextEvent event) {
 		try {
-			pool.shutdownNow();
 			model.close();
 			queue.clear();
 		} finally {
-			pool = null;
 			model = null;
 			queue = null;
 		}
+	}
+	
+	private void startDaemonThread(Runnable r, String name) {
+		Thread t = new Thread(r);
+		t.setDaemon(true);
+		t.setName(name);
+		t.start();
 	}
 }
