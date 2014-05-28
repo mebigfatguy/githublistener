@@ -41,43 +41,28 @@ public class CassandraReader {
 	}
 
 	public ItemCount[] getTopProjectsByWeek() {
-		ItemCount item = new ItemCount();
-		item.setName("proj1");
-		item.setCount(20);
-		
-		return new ItemCount[] { item };
+		ResultSet rs = model.getSession().execute(model.getProjectsByWeekPS().bind());
+		return sortTopItems(rs);
 	}
 
 	public ItemCount[] getTopProjectsByDay() {
-		ItemCount item = new ItemCount();
-		item.setName("proj1");
-		item.setCount(20);
-		
-		return new ItemCount[] { item };
+		ResultSet rs = model.getSession().execute(model.getProjectsByDayPS().bind());
+		return sortTopItems(rs);
 	}
 
 	public ItemCount[] getTopUsersByMonth() {
-		ItemCount item = new ItemCount();
-		item.setName("user1");
-		item.setCount(20);
-		
-		return new ItemCount[] { item };
+		ResultSet rs = model.getSession().execute(model.getUsersByMonthPS().bind());
+		return sortTopItems(rs);
 	}
 
 	public ItemCount[] getTopUsersByWeek() {
-		ItemCount item = new ItemCount();
-		item.setName("user1");
-		item.setCount(20);
-		
-		return new ItemCount[] { item };
+		ResultSet rs = model.getSession().execute(model.getUsersByWeekPS().bind());
+		return sortTopItems(rs);
 	}
 
 	public ItemCount[] getTopUsersByDay() {
-		ItemCount item = new ItemCount();
-		item.setName("user1");
-		item.setCount(20);
-		
-		return new ItemCount[] { item };
+		ResultSet rs = model.getSession().execute(model.getUsersByDayPS().bind());
+		return sortTopItems(rs);
 	}
 	
 	public ItemCount[] sortTopItems(ResultSet rs) {

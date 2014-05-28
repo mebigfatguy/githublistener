@@ -73,6 +73,27 @@ public class CassandraModel {
 		return projectsByMonthPS;
 	}
 	
+	public PreparedStatement getProjectsByWeekPS() {
+		return projectsByWeekPS;
+	}
+	
+	public PreparedStatement getProjectsByDayPS() {
+		return projectsByDayPS;
+	}
+	
+	public PreparedStatement getUsersByMonthPS() {
+		return usersByMonthPS;
+	}
+	
+	public PreparedStatement getUsersByWeekPS() {
+		return usersByWeekPS;
+	}
+	
+	public PreparedStatement getUsersByDayPS() {
+		return usersByDayPS;
+	}
+
+	
 	private void setUpSchema(int replicationFactor) {
 
         try {
