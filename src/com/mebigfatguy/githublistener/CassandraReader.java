@@ -16,15 +16,14 @@
  */
 package com.mebigfatguy.githublistener;
 
-import com.datastax.driver.core.Session;
 import com.mebigfatguy.githublistener.rest.ItemCount;
 
 public class CassandraReader {
 
-	private Session session;
+	private CassandraModel model;
 	
-	public CassandraReader(Session session) {
-		this.session = session;
+	public CassandraReader(CassandraModel model) {
+		this.model = model;
 	}
 	
 	public ItemCount[] getTopProjectsByMonth() {
@@ -73,5 +72,9 @@ public class CassandraReader {
 		item.setCount(20);
 		
 		return new ItemCount[] { item };
+	}
+	
+	private void setUpStatements() {
+		
 	}
 }

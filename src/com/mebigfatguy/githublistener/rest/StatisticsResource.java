@@ -23,7 +23,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import com.datastax.driver.core.Session;
+import com.mebigfatguy.githublistener.CassandraModel;
 import com.mebigfatguy.githublistener.CassandraReader;
 
 @Path("/statistics")
@@ -36,7 +36,7 @@ public class StatisticsResource {
 	@Path("/projects/month")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Items getTopProjectsByMonth() {
-		CassandraReader reader = new CassandraReader((Session) context.getAttribute("session"));
+		CassandraReader reader = new CassandraReader((CassandraModel) context.getAttribute("model"));
 		
 		return new Items("Projects", "Count By Month", reader.getTopProjectsByMonth());
 	}
@@ -45,7 +45,7 @@ public class StatisticsResource {
 	@Path("/projects/week")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Items getTopProjectsByWeek() {
-		CassandraReader reader = new CassandraReader((Session) context.getAttribute("session"));
+		CassandraReader reader = new CassandraReader((CassandraModel) context.getAttribute("model"));
 		
 		return new Items("Projects", "Count By Week", reader.getTopProjectsByWeek());
 	}
@@ -54,7 +54,7 @@ public class StatisticsResource {
 	@Path("/projects/day")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Items getTopProjectsByDay() {
-		CassandraReader reader = new CassandraReader((Session) context.getAttribute("session"));
+		CassandraReader reader = new CassandraReader((CassandraModel) context.getAttribute("model"));
 		
 		return new Items("Projects", "Count By Day", reader.getTopProjectsByDay());
 	}
@@ -63,7 +63,7 @@ public class StatisticsResource {
 	@Path("/users/month")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Items getTopUsersByMonth() {
-		CassandraReader reader = new CassandraReader((Session) context.getAttribute("session"));
+		CassandraReader reader = new CassandraReader((CassandraModel) context.getAttribute("model"));
 		
 		return new Items("Users", "Count By Month", reader.getTopUsersByMonth());
 	}
@@ -72,7 +72,7 @@ public class StatisticsResource {
 	@Path("/users/week")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Items getTopUsersByWeek() {
-		CassandraReader reader = new CassandraReader((Session) context.getAttribute("session"));
+		CassandraReader reader = new CassandraReader((CassandraModel) context.getAttribute("model"));
 		
 		return new Items("Users", "Count By Week", reader.getTopUsersByWeek());
 	}
@@ -81,7 +81,7 @@ public class StatisticsResource {
 	@Path("/users/day")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Items getTopUsersByDay() {
-		CassandraReader reader = new CassandraReader((Session) context.getAttribute("session"));
+		CassandraReader reader = new CassandraReader((CassandraModel) context.getAttribute("model"));
 		
 		return new Items("Users", "Count By Day", reader.getTopUsersByDay());
 	}

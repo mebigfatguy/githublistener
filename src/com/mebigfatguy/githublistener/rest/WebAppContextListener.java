@@ -31,8 +31,7 @@ import org.kohsuke.github.GHEventInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.Session;
+import com.mebigfatguy.githublistener.CassandraModel;
 import com.mebigfatguy.githublistener.CassandraWriter;
 import com.mebigfatguy.githublistener.DaemonThreadFactory;
 import com.mebigfatguy.githublistener.EventPoller;
@@ -43,8 +42,7 @@ public class WebAppContextListener implements ServletContextListener {
 	
 	private ExecutorService pool = null;
 	private ArrayBlockingQueue<GHEventInfo> queue;
-	private Cluster cluster;
-	private Session session;
+	private CassandraModel model;
 
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
@@ -53,8 +51,10 @@ public class WebAppContextListener implements ServletContextListener {
 			Context envContext = (Context)ic.lookup("java:/comp/env");
 			
 			String endPoints = (String) envContext.lookup("endpoints");
-			cluster = new Cluster.Builder().addContactPoints(endPoints.split(",")).build();
-			session = cluster.connect();
+			Integer replicationFactor = (Integer) envContext.lookup("replicationfactor");
+			
+			model = new CassandraModel(endPoints.split(","), replicationFactor.intValue());
+			event.getServletContext().setAttribute("model", model);
 			
 			int numWriters = (Integer) envContext.lookup("numwriters");
 			pool = Executors.newFixedThreadPool(numWriters + 1, new DaemonThreadFactory("githublistener"));
@@ -66,14 +66,10 @@ public class WebAppContextListener implements ServletContextListener {
 			EventPoller ep = new EventPoller(queue, userName, authToken);
 			pool.submit(ep);
 			
-			int replicationFactor = (Integer) envContext.lookup("replicationfactor");
-			
 			for (int i = 0; i < numWriters; i++) {
-				CassandraWriter cw = new CassandraWriter(queue, session, replicationFactor);
+				CassandraWriter cw = new CassandraWriter(queue, model);
 				pool.submit(cw);
-			}	
-			
-			event.getServletContext().setAttribute("session", session);
+			}
 		} catch (NamingException ne) {
 			LOGGER.error("Failed looking up environment properties through jndi", ne);
 		} catch (IOException ioe) {
@@ -85,13 +81,11 @@ public class WebAppContextListener implements ServletContextListener {
 	public void contextDestroyed(ServletContextEvent event) {
 		try {
 			pool.shutdownNow();
-			session.close();
-			cluster.close();
+			model.close();
 			queue.clear();
 		} finally {
 			pool = null;
-			session = null;
-			cluster = null;
+			model = null;
 			queue = null;
 		}
 	}
