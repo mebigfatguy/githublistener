@@ -49,6 +49,8 @@ public class CassandraWriter implements Runnable {
 				Date date = event.getCreatedAt();
 				String project = event.getRepository().getName();
 				String user = event.getActorLogin();
+				LOGGER.debug("Writing event for project {} and user {}", project, user);
+				
 				String eventType = (event.getType() == null) ? "" : event.getType().name();
 				model.getSession().execute(model.getBatchEventPS().bind(project, user, date, eventType, user, project, date, eventType));
 

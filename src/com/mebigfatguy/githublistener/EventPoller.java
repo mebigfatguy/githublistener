@@ -48,6 +48,7 @@ public class EventPoller implements Runnable {
 	public void run() {
 		while (!Thread.interrupted()) {
 			try {
+				LOGGER.debug("Attempting to pull events from github");
 				List<GHEventInfo> currentEvents = github.getEvents();
 				eventQueue.addAll(currentEvents);
 				LOGGER.info("Event queue size is {}", eventQueue.size());
