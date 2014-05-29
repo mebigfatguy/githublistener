@@ -3,9 +3,7 @@ githublistener
 
 A simple web app that will show most active user and projects on github by day, week and month.
 
-This is a work in progress.
-
-Uses Cassandra as the events store.
+Uses Cassandra as the events store, using the data-stax cql driver.
 
 the web app uses jndi to pull various settings from java:/comp/env so you will have to set these up in the container of your choice. In Tomcat for instance you would create a file called
 
