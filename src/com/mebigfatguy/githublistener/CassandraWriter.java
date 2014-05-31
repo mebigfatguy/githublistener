@@ -19,9 +19,11 @@ package com.mebigfatguy.githublistener;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import org.joda.time.DateTime;
+import org.kohsuke.github.GHEvent;
 import org.kohsuke.github.GHEventInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,10 +37,12 @@ public class CassandraWriter implements Runnable {
 	
 	private final ArrayBlockingQueue<GHEventInfo> queue;
 	private CassandraModel model;
+	private Map<GHEvent, Integer> eventWeights;
 	
-	public CassandraWriter(ArrayBlockingQueue<GHEventInfo> queue, CassandraModel model) {
+	public CassandraWriter(ArrayBlockingQueue<GHEventInfo> queue, CassandraModel model, Map<GHEvent, Integer> eventWeights) {
 		this.queue = queue;
 		this.model = model;
+		this.eventWeights = eventWeights;
 	}
 	
 	@Override
@@ -51,14 +55,23 @@ public class CassandraWriter implements Runnable {
 				String user = event.getActorLogin();
 				LOGGER.debug("Writing event for project {} and user {}", project, user);
 				
-				String eventType = (event.getType() == null) ? "" : event.getType().name();
+				String eventType;
+				int weight;
+				
+				if (event.getType() == null) {
+					eventType = "";
+					weight = 1;
+				} else {
+					eventType = event.getType().name();
+					weight = eventWeights.get(event.getType());
+				}
 				model.getSession().execute(model.getBatchEventPS().bind(project, user, date, eventType, user, project, date, eventType));
 
 				Date day = new DateTime(date).withTimeAtStartOfDay().toDate();
 				Date week = new DateTime(day).withDayOfWeek(Calendar.SUNDAY).toDate();
 				Date month = new DateTime(week).withDayOfMonth(1).toDate();
 				
-				model.getSession().execute(model.getBatchCountPS().bind(project, day, user, day, project, week, user, week, project, month, user, month));
+				model.getSession().execute(model.getBatchCountPS().bind(weight, project, day, weight, user, day, weight, project, week, weight, user, week, weight, project, month, weight, user, month));
 			
 			} catch (IOException ioe) {
 				LOGGER.error("Failed writing events to cassandra", ioe);

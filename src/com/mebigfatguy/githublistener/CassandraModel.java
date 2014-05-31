@@ -128,12 +128,12 @@ public class CassandraModel {
 		
 		incBatchCountPS = session.prepare(
 									"BEGIN COUNTER BATCH " + 
-									"update github.project_day_counts set count = count + 1 where project = ? and date = ?"	+
-									"update github.user_day_counts set count = count + 1 where user = ? and date = ?" +
-									"update github.project_week_counts set count = count + 1 where project = ? and date = ?" +
-									"update github.user_week_counts set count = count + 1 where user = ? and date = ?" +
-									"update github.project_month_counts set count = count + 1 where project = ? and date = ?" +
-									"update github.user_month_counts set count = count + 1 where user = ? and date = ?" +
+									"update github.project_day_counts set count = count + ? where project = ? and date = ?"	+
+									"update github.user_day_counts set count = count + ? where user = ? and date = ?" +
+									"update github.project_week_counts set count = count + ? where project = ? and date = ?" +
+									"update github.user_week_counts set count = count + ? where user = ? and date = ?" +
+									"update github.project_month_counts set count = count + ? where project = ? and date = ?" +
+									"update github.user_month_counts set count = count + ? where user = ? and date = ?" +
 									"APPLY BATCH"
 									);
 		

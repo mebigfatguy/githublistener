@@ -38,7 +38,7 @@ public class StatisticsResource {
 	public Items getTopProjectsByMonth() {
 		CassandraReader reader = new CassandraReader((CassandraModel) context.getAttribute("model"));
 		
-		return new Items("Projects", "Count By Month", reader.getTopProjectsByMonth());
+		return new Items("Projects", "Score By Month", reader.getTopProjectsByMonth());
 	}
 	
 	@GET
@@ -47,7 +47,7 @@ public class StatisticsResource {
 	public Items getTopProjectsByWeek() {
 		CassandraReader reader = new CassandraReader((CassandraModel) context.getAttribute("model"));
 		
-		return new Items("Projects", "Count By Week", reader.getTopProjectsByWeek());
+		return new Items("Projects", "Score By Week", reader.getTopProjectsByWeek());
 	}
 	
 	@GET
@@ -56,7 +56,7 @@ public class StatisticsResource {
 	public Items getTopProjectsByDay() {
 		CassandraReader reader = new CassandraReader((CassandraModel) context.getAttribute("model"));
 		
-		return new Items("Projects", "Count By Day", reader.getTopProjectsByDay());
+		return new Items("Projects", "Score By Day", reader.getTopProjectsByDay());
 	}
 	
 	@GET
@@ -65,7 +65,7 @@ public class StatisticsResource {
 	public Items getTopUsersByMonth() {
 		CassandraReader reader = new CassandraReader((CassandraModel) context.getAttribute("model"));
 		
-		return new Items("Users", "Count By Month", reader.getTopUsersByMonth());
+		return new Items("Users", "Score By Month", reader.getTopUsersByMonth());
 	}
 	
 	@GET
@@ -74,7 +74,7 @@ public class StatisticsResource {
 	public Items getTopUsersByWeek() {
 		CassandraReader reader = new CassandraReader((CassandraModel) context.getAttribute("model"));
 		
-		return new Items("Users", "Count By Week", reader.getTopUsersByWeek());
+		return new Items("Users", "Score By Week", reader.getTopUsersByWeek());
 	}
 	
 	@GET
@@ -83,6 +83,6 @@ public class StatisticsResource {
 	public Items getTopUsersByDay() {
 		CassandraReader reader = new CassandraReader((CassandraModel) context.getAttribute("model"));
 		
-		return new Items("Users", "Count By Day", reader.getTopUsersByDay());
+		return new Items("Users", "Score By Day", reader.getTopUsersByDay());
 	}
 }
