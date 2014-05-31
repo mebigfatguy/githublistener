@@ -7,7 +7,7 @@
 	<classpathentry kind="lib" path="lib/commons-cli-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/guava-17.0.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-core-asl-1.9.13.jar"/>
-	<classpathentry kind="lib" path="lib/jackson-mapper-asl-1.9.13.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-mapper-asl-1.9.13.jar" sourcepath="lib/sources/jackson-mapper-asl-1.9.13-sources.jar"/>
 	<classpathentry kind="lib" path="lib/libthrift-0.9.1.jar"/>
 	<classpathentry kind="lib" path="lib/metrics-core-3.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/netty-3.9.0.Final.jar"/>

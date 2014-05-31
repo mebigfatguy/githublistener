@@ -10,7 +10,8 @@
 
 	<div class="container">
 		<h1>GitHub Statistics</h1>
-		<h4>Shows counts of events by project or user for various time periods.</h4>
+		<h4>Shows scores by project or user for various time periods based on GitHub events that occur.
+		The scores are weighted by the event type, as seen <a href="#">here.</a></h4>
 
 		<div class="navbar">
 			<div class="navbar-inner">
@@ -29,7 +30,15 @@
 		</div>
 
 		<div class="span12">
-			<table class="table">
+			<table id="scores" class="table">
+			</table>
+		</div>
+		
+		<hr/>
+		
+		<div class="span12">
+			<table id="weights" class="table">
+				<tr><th>Event</th><th>Weight</th></tr>
 			</table>
 		</div>
 	</div>

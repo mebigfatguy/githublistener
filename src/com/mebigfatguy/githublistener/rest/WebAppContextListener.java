@@ -74,6 +74,7 @@ public class WebAppContextListener implements ServletContextListener {
 			startDaemonThread(ep, "Event Poller");
 			
 			Map<GHEvent, Long> eventWeights = buildEventWeights((String) envContext.lookup("eventweights"));
+			event.getServletContext().setAttribute("weights", eventWeights);
 			
 			Integer numWriters = (Integer) envContext.lookup("numwriters");
 			if (numWriters == null) {
