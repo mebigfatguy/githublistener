@@ -67,7 +67,7 @@ public class WebAppContextListener implements ServletContextListener {
 			EventPoller ep = new EventPoller(queue, userName, authToken);
 			startDaemonThread(ep, "Event Poller");
 			
-			Map<GHEvent, Integer> eventWeights = buildEventWeights((String) envContext.lookup("eventweights"));
+			Map<GHEvent, Long> eventWeights = buildEventWeights((String) envContext.lookup("eventweights"));
 			
 			int numWriters = (Integer) envContext.lookup("numwriters");
 			for (int i = 0; i < numWriters; i++) {
@@ -99,11 +99,11 @@ public class WebAppContextListener implements ServletContextListener {
 		t.start();
 	}
 	
-	private Map<GHEvent, Integer> buildEventWeights(String eventWeights) {
+	private Map<GHEvent, Long> buildEventWeights(String eventWeights) {
 		
 		
-		Map<GHEvent, Integer> weights = new EnumMap<>(GHEvent.class);
-		Integer one = Integer.valueOf(1);
+		Map<GHEvent, Long> weights = new EnumMap<>(GHEvent.class);
+		Long one = Long.valueOf(1);
 		for (GHEvent event : GHEvent.values()) {
 			weights.put(event, one);
 		}
@@ -121,7 +121,7 @@ public class WebAppContextListener implements ServletContextListener {
 					Map.Entry<String, JsonNode> entry = it.next();
 					GHEvent event = GHEvent.valueOf(entry.getKey().toUpperCase());
 					if (event != null) {
-						weights.put(event, Integer.valueOf(entry.getValue().getIntValue()));
+						weights.put(event, Long.valueOf(entry.getValue().getLongValue()));
 					}
 				}
 			} catch (Exception e) {

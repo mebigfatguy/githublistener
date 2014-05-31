@@ -37,9 +37,9 @@ public class CassandraWriter implements Runnable {
 	
 	private final ArrayBlockingQueue<GHEventInfo> queue;
 	private CassandraModel model;
-	private Map<GHEvent, Integer> eventWeights;
+	private Map<GHEvent, Long> eventWeights;
 	
-	public CassandraWriter(ArrayBlockingQueue<GHEventInfo> queue, CassandraModel model, Map<GHEvent, Integer> eventWeights) {
+	public CassandraWriter(ArrayBlockingQueue<GHEventInfo> queue, CassandraModel model, Map<GHEvent, Long> eventWeights) {
 		this.queue = queue;
 		this.model = model;
 		this.eventWeights = eventWeights;
@@ -56,7 +56,7 @@ public class CassandraWriter implements Runnable {
 				LOGGER.debug("Writing event for project {} and user {}", project, user);
 				
 				String eventType;
-				int weight;
+				long weight;
 				
 				if (event.getType() == null) {
 					eventType = "";
