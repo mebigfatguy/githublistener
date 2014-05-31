@@ -137,11 +137,11 @@ public class CassandraModel {
 									"APPLY BATCH"
 									);
 		
-		projectsByMonthPS = session.prepare("select project, count from project_month_counts");
-		projectsByWeekPS = session.prepare("select project, count from project_week_counts");
-		projectsByDayPS = session.prepare("select project, count from project_day_counts");
-		usersByMonthPS = session.prepare("select user, count from user_month_counts");
-		usersByWeekPS = session.prepare("select user, count from user_week_counts");
-		usersByDayPS = session.prepare("select user, count from user_day_counts");
+		projectsByMonthPS = session.prepare("select project, count from project_month_counts where date = ?");
+		projectsByWeekPS = session.prepare("select project, count from project_week_counts where date = ?");
+		projectsByDayPS = session.prepare("select project, count from project_day_counts where date = ?");
+		usersByMonthPS = session.prepare("select user, count from user_month_counts where date = ?");
+		usersByWeekPS = session.prepare("select user, count from user_week_counts where date = ?");
+		usersByDayPS = session.prepare("select user, count from user_day_counts where date = ?");
 	}
 }

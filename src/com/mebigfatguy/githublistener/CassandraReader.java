@@ -17,8 +17,12 @@
 package com.mebigfatguy.githublistener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+
+import org.joda.time.DateTime;
 
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
@@ -36,32 +40,38 @@ public class CassandraReader {
 	}
 	
 	public ItemCount[] getTopProjectsByMonth() {
-		ResultSet rs = model.getSession().execute(model.getProjectsByMonthPS().bind());
+		Date month = new DateTime().withDayOfMonth(1).withTimeAtStartOfDay().toDate();		
+		ResultSet rs = model.getSession().execute(model.getProjectsByMonthPS().bind(month));
 		return sortTopItems(rs);
 	}
 
 	public ItemCount[] getTopProjectsByWeek() {
-		ResultSet rs = model.getSession().execute(model.getProjectsByWeekPS().bind());
+		Date week = new DateTime().withDayOfWeek(Calendar.SUNDAY).withTimeAtStartOfDay().toDate();		
+		ResultSet rs = model.getSession().execute(model.getProjectsByWeekPS().bind(week));
 		return sortTopItems(rs);
 	}
 
 	public ItemCount[] getTopProjectsByDay() {
-		ResultSet rs = model.getSession().execute(model.getProjectsByDayPS().bind());
+		Date day = new DateTime().withTimeAtStartOfDay().toDate();	
+		ResultSet rs = model.getSession().execute(model.getProjectsByDayPS().bind(day));
 		return sortTopItems(rs);
 	}
 
 	public ItemCount[] getTopUsersByMonth() {
-		ResultSet rs = model.getSession().execute(model.getUsersByMonthPS().bind());
+		Date month = new DateTime().withDayOfMonth(1).withTimeAtStartOfDay().toDate();		
+		ResultSet rs = model.getSession().execute(model.getUsersByMonthPS().bind(month));
 		return sortTopItems(rs);
 	}
 
 	public ItemCount[] getTopUsersByWeek() {
-		ResultSet rs = model.getSession().execute(model.getUsersByWeekPS().bind());
+		Date week = new DateTime().withDayOfWeek(Calendar.SUNDAY).withTimeAtStartOfDay().toDate();		
+		ResultSet rs = model.getSession().execute(model.getUsersByWeekPS().bind(week));
 		return sortTopItems(rs);
 	}
 
 	public ItemCount[] getTopUsersByDay() {
-		ResultSet rs = model.getSession().execute(model.getUsersByDayPS().bind());
+		Date day = new DateTime().withTimeAtStartOfDay().toDate();	
+		ResultSet rs = model.getSession().execute(model.getUsersByDayPS().bind(day));
 		return sortTopItems(rs);
 	}
 	
