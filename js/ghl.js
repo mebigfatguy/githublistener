@@ -1,4 +1,7 @@
+
+
 $(document).ready(function() {
+	$("#weightslink[rel]").overlay();
 	var selTab = $('li.active').attr('id');
 	var parts = selTab.split("_");
 	

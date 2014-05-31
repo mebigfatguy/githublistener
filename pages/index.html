@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>GitHubListener</title>
 <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+<link rel="stylesheet" href="css/ghl.css" type="text/css" />
 
 </head>
 <body>
@@ -11,7 +12,7 @@
 	<div class="container">
 		<h1>GitHub Statistics</h1>
 		<h4>Shows scores by project or user for various time periods based on GitHub events that occur.
-		The scores are weighted by the event type, as seen <a href="#">here.</a></h4>
+		The scores are weighted by the event type, as seen <a id="weightslink" href="#" rel="#weightsdiv">here.</a></h4>
 
 		<div class="navbar">
 			<div class="navbar-inner">
@@ -36,14 +37,15 @@
 		
 		<hr/>
 		
-		<div class="span12">
-			<table id="weights" class="table">
+		<div id="weightsdiv" class="simple_overlay">
+			<table id="weights" class="table small">
 				<tr><th>Event</th><th>Weight</th></tr>
 			</table>
 		</div>
 	</div>
 
 	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	<script src="http://cdn.jquerytools.org/1.2.7/full/jquery.tools.min.js"></script>
 	<script src="js/bootstrap.js"></script>
 	<script src="js/ghl.js"></script>
 </body>
