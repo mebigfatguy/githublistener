@@ -17,7 +17,7 @@
   */ 
 -->
 
-<project name="githublistener" default="info">
+<project name="githublistener" default="info" basedir=".">
 	<property file="${basedir}/user.properties"/>
 	<property file="${basedir}/build.properties"/>
 	<property file="${basedir}/version.properties" />
@@ -150,14 +150,16 @@
 		</javac>
 	</target>
 
-	<target name="srczip" description="builds the source distribution zip file">
-		<zip destfile="${target.dir}/githublistener-src-${githublistener.version}.zip"
-			basedir="${basedir}">
-			<fileset dir="${src.dir}">
-				<include name="**/*.java" />
-			</fileset>
-			<fileset dir="${conf.dir}">
-				<include name="**/*.xml" />
+	<target name="srcjar" description="builds the source distribution zip file">
+		<zip destfile="${target.dir}/githublistener-${githublistener.version}-sources.jar">
+			<fileset dir="${basedir}">
+				<exclude name=".settings" />
+				<exclude name=".settings/**/*.*" />
+				<exclude name="target/**/*.*" />
+				<exclude name="lib/**/*.*" />
+				<exclude name="lib/sources" />
+				<exclude name="lib" />
+				<exclude name="**/*.properties"/>
 			</fileset>
 		</zip>
 	</target>
@@ -184,6 +186,6 @@
 		</jar>
 	</target>
 
-	<target name="release" depends="war, srczip, javadoc" description="prepares everything for a release" />
+	<target name="release" depends="war, srcjar, javadoc" description="prepares everything for a release" />
 
 </project>
