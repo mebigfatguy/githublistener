@@ -55,7 +55,13 @@ public class WebAppContextListener implements ServletContextListener {
 			Context envContext = (Context)ic.lookup("java:/comp/env");
 			
 			String endPoints = (String) envContext.lookup("endpoints");
+			if (endPoints == null) {
+				endPoints = "127.0.0.1";
+			}
 			Integer replicationFactor = (Integer) envContext.lookup("replicationfactor");
+			if (replicationFactor == null) {
+				replicationFactor = Integer.valueOf(1);
+			}
 			
 			model = new CassandraModel(endPoints.split(","), replicationFactor.intValue());
 			event.getServletContext().setAttribute("model", model);
@@ -69,8 +75,12 @@ public class WebAppContextListener implements ServletContextListener {
 			
 			Map<GHEvent, Long> eventWeights = buildEventWeights((String) envContext.lookup("eventweights"));
 			
-			int numWriters = (Integer) envContext.lookup("numwriters");
-			for (int i = 0; i < numWriters; i++) {
+			Integer numWriters = (Integer) envContext.lookup("numwriters");
+			if (numWriters == null) {
+				numWriters = Integer.valueOf(10);
+			}
+			
+			for (int i = 0; i < numWriters.intValue(); i++) {
 				CassandraWriter cw = new CassandraWriter(queue, model, eventWeights);
 				startDaemonThread(cw,  "Cassandra Writer " + (i + 1));
 			}

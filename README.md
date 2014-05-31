@@ -20,9 +20,19 @@ with the contents
         <Environment name="numwriters" value="10" type="java.lang.Integer" override="false"/>
         <Environment name="endpoints" value="192.168.1.100,192.168.1.200" type="java.lang.String" override="false"/>
         <Environment name="replicationfactor" value="2" type="java.lang.Integer" override="false"/>
+	<Environment name="eventweights" value="{'PUSH' : 2}" type="java.lang.String" override="false"/>
     </Context>
 
 Or with the settings you would like.
+
+Only the options username and authtoken are required.
+
+If not set the other options default to:
+
+    numwriters        : 10
+    endpoints         : 127.0.0.1
+    replicationfactor : 1
+    eventweights      : 1 for all values
 
 
 Pointing your browser then at
