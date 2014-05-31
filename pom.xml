@@ -100,16 +100,13 @@
 				</includes>
 			</resource>
 			<resource>
-				<directory>${basedir}/conf</directory>
-			</resource>
-			<resource>
-				<directory>${basedir}/css</directory>
-			</resource>
-			<resource>
-				<directory>${basedir}/img</directory>
-			</resource>
-			<resource>
-				<directory>${basedir}/js</directory>
+				<directory>${basedir}</directory>
+				<includes>
+					<include>conf/*</include>
+					<include>css/*</include>
+					<include>img/*</include>
+					<include>js/*</include>
+				</includes>
 			</resource>
 		</resources>
 
