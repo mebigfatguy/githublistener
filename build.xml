@@ -42,7 +42,9 @@
 	<property name="javac.deprecation" value="on" />
 	<property name="javac.debug" value="on" />
 
-	<property name="githublistener.version" value="0.1.0" />
+	<property name="githublistener.version" value="0.2.0" />
+
+	<property name="sonatype.dir" value="${user.home}/.githublistener-${githublistener.version}-sonatype" />
 
 	<target name="clean" description="removes all generated collateral">
 		<delete dir="${target.dir}" />
@@ -187,5 +189,41 @@
 	</target>
 
 	<target name="release" depends="war, srcjar, javadoc" description="prepares everything for a release" />
+	
+	<target name="sonatype" depends="clean, release" description="builds the sonatype bundle">
+        <mkdir dir="${sonatype.dir}"/>
+        <copy todir="${sonatype.dir}" file="${target.dir}/githublistener-${githublistener.version}.war"/>
+        <copy tofile="${sonatype.dir}" file="${target.dir}/githublistener-${githublistener.version}-sources.jar"/>
+        <jar destfile="${sonatype.dir}/githublistener-${githublistener.version}-javadoc.jar" basedir="${target.dir}" includes="javadoc/**"/>
+        <copy tofile="${sonatype.dir}/githublistener-${githublistener.version}.pom" file="${basedir}/pom.xml"/>
+        
+        <exec executable="gpg">
+            <arg value="-abi" />
+            <arg value="${sonatype.dir}/githublistener-${githublistener.version}.war" />
+        </exec>
+        <exec executable="gpg">
+            <arg value="-abi" />
+            <arg value="${sonatype.dir}/githublistener-${githublistener.version}.pom" />
+        </exec>
+        <exec executable="gpg">
+            <arg value="-abi" />
+            <arg value="${sonatype.dir}/githublistener-${githublistener.version}-sources.jar" />
+        </exec>        
+        <exec executable="gpg">
+            <arg value="-abi" />
+            <arg value="${sonatype.dir}/githublistener-${githublistener.version}-javadoc.jar" />
+        </exec>
+        <jar destfile="${sonatype.dir}/bundle.jar" basedir="${sonatype.dir}" includes="githublistener*">
+        </jar>
+        <echo message="" />
+        <echo message="" />
+        <echo message="====================================================================================================================================" />
+        <echo message="sonatype update bundle produced at ${sonatype.dir}/bundle.jar" />
+        <echo message="upload this jar at https://oss.sonatype.org" />
+        <echo message="" />
+        <echo message="see link for details-> https://docs.sonatype.org/display/Repository/Uploading+3rd-party+Artifacts+to+The+Central+Repository" />
+        <echo message="====================================================================================================================================" />
+
+	</target>
 
 </project>
