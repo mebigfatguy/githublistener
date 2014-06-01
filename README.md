@@ -20,7 +20,7 @@ with the contents
         <Environment name="numwriters" value="10" type="java.lang.Integer" override="false"/>
         <Environment name="endpoints" value="192.168.1.100,192.168.1.200" type="java.lang.String" override="false"/>
         <Environment name="replicationfactor" value="2" type="java.lang.Integer" override="false"/>
-	<Environment name="eventweights" value="{'PUSH' : 2}" type="java.lang.String" override="false"/>
+        <Environment name="eventweights" value="{'PUSH' : 2}" type="java.lang.String" override="false"/>
     </Context>
 
 Or with the settings you would like.
