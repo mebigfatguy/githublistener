@@ -16,9 +16,11 @@
  */
 package com.mebigfatguy.githublistener.rest;
 
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -27,6 +29,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.kohsuke.github.GHEvent;
 
+import com.mebigfatguy.githublistener.Bundle;
 import com.mebigfatguy.githublistener.CassandraModel;
 import com.mebigfatguy.githublistener.CassandraReader;
 
@@ -48,54 +51,66 @@ public class StatisticsResource {
 	@GET
 	@Path("/projects/month")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Items getTopProjectsByMonth() {
+	public Items getTopProjectsByMonth(@Context HttpServletRequest request) {
+		Locale locale = request.getLocale();
+		
 		CassandraReader reader = new CassandraReader((CassandraModel) context.getAttribute("model"));
 		
-		return new Items("Projects", "Score By Month", reader.getTopProjectsByMonth());
+		return new Items(Bundle.getString(locale, Bundle.Projects), Bundle.getString(locale,  Bundle.ScoreByMonth), reader.getTopProjectsByMonth());
 	}
 	
 	@GET
 	@Path("/projects/week")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Items getTopProjectsByWeek() {
+	public Items getTopProjectsByWeek(@Context HttpServletRequest request) {
+		Locale locale = request.getLocale();
+		
 		CassandraReader reader = new CassandraReader((CassandraModel) context.getAttribute("model"));
 		
-		return new Items("Projects", "Score By Week", reader.getTopProjectsByWeek());
+		return new Items(Bundle.getString(locale, Bundle.Projects), Bundle.getString(locale, Bundle.ScoreByWeek), reader.getTopProjectsByWeek());
 	}
 	
 	@GET
 	@Path("/projects/day")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Items getTopProjectsByDay() {
+	public Items getTopProjectsByDay(@Context HttpServletRequest request) {
+		Locale locale = request.getLocale();
+		
 		CassandraReader reader = new CassandraReader((CassandraModel) context.getAttribute("model"));
 		
-		return new Items("Projects", "Score By Day", reader.getTopProjectsByDay());
+		return new Items(Bundle.getString(locale, Bundle.Projects), Bundle.getString(locale, Bundle.ScoreByDay), reader.getTopProjectsByDay());
 	}
 	
 	@GET
 	@Path("/users/month")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Items getTopUsersByMonth() {
+	public Items getTopUsersByMonth(@Context HttpServletRequest request) {
+		Locale locale = request.getLocale();
+		
 		CassandraReader reader = new CassandraReader((CassandraModel) context.getAttribute("model"));
 		
-		return new Items("Users", "Score By Month", reader.getTopUsersByMonth());
+		return new Items(Bundle.getString(locale, Bundle.Users), Bundle.getString(locale,  Bundle.ScoreByMonth), reader.getTopUsersByMonth());
 	}
 	
 	@GET
 	@Path("/users/week")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Items getTopUsersByWeek() {
+	public Items getTopUsersByWeek(@Context HttpServletRequest request) {
+		Locale locale = request.getLocale();
+		
 		CassandraReader reader = new CassandraReader((CassandraModel) context.getAttribute("model"));
 		
-		return new Items("Users", "Score By Week", reader.getTopUsersByWeek());
+		return new Items(Bundle.getString(locale, Bundle.Users), Bundle.getString(locale, Bundle.ScoreByWeek), reader.getTopUsersByWeek());
 	}
 	
 	@GET
 	@Path("/users/day")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Items getTopUsersByDay() {
+	public Items getTopUsersByDay(@Context HttpServletRequest request) {
+		Locale locale = request.getLocale();
+		
 		CassandraReader reader = new CassandraReader((CassandraModel) context.getAttribute("model"));
 		
-		return new Items("Users", "Score By Day", reader.getTopUsersByDay());
+		return new Items(Bundle.getString(locale, Bundle.Users), Bundle.getString(locale, Bundle.ScoreByDay), reader.getTopUsersByDay());
 	}
 }

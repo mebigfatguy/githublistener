@@ -141,6 +141,11 @@
 				<include name="**/*"/>
 			</fileset>
 		</copy>
+		<copy todir="${classes.dir}">
+			<fileset dir="${src.dir}">
+				<include name="**/*.properties"/>
+			</fileset>
+		</copy>
 	</target>
 		
 	<target name="compile" depends="-init" description="compiles java files">
