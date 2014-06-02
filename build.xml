@@ -98,7 +98,6 @@
             <server url="http://repo1.maven.org/maven2" />
             <generateVersions propertyFileName="${basedir}/version.properties" />
         </yank:yank>
-		<!-- figure out a better way to pull javascript stuff -->
     </target>
 
 	<target name="-init" depends="yank" description="prepares repository for a build">
