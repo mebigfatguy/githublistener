@@ -84,7 +84,7 @@ public class CassandraReader {
 		}
 		
 		Collections.sort(items, COMPARATOR);
-		List<ItemCount> subList = items.subList(0,  MAX_RESULTS);
+		List<ItemCount> subList = (items.size() > MAX_RESULTS) ? items.subList(0,  MAX_RESULTS) : items;
 		
 		return subList.toArray(new ItemCount[subList.size()]);
 	}
