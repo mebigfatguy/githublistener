@@ -39,6 +39,7 @@ public class StatisticsResource {
 	@GET
 	@Path("/weights")
 	@Produces(MediaType.APPLICATION_JSON)
+	@SuppressWarnings("unchecked")
 	public Map<GHEvent, Long> getEventWeights() {
 		return (Map<GHEvent, Long>) context.getAttribute("weights");
 	}
