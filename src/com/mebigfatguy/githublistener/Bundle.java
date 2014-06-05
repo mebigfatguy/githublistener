@@ -2,7 +2,6 @@ package com.mebigfatguy.githublistener;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.concurrent.ConcurrentHashMap;
 
 public enum Bundle {
 
