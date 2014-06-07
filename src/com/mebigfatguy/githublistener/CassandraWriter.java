@@ -25,6 +25,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import org.joda.time.DateTime;
 import org.kohsuke.github.GHEvent;
 import org.kohsuke.github.GHEventInfo;
+import org.kohsuke.github.GHRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +52,8 @@ public class CassandraWriter implements Runnable {
 			try {
 				GHEventInfo event = queue.take();
 				Date date = event.getCreatedAt();
-				String project = event.getRepository().getName();
+				GHRepository repo = event.getRepository();
+				String project = repo.getOwner().getLogin() + '/' + repo.getName();
 				String user = event.getActorLogin();
 				LOGGER.debug("Writing event for project {} and user {}", project, user);
 				
