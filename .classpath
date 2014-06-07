@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="conf"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/cassandra-all-2.0.7.jar"/>
 	<classpathentry kind="lib" path="lib/commons-cli-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/guava-17.0.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-core-asl-1.9.13.jar"/>
@@ -34,5 +33,6 @@
 	<classpathentry kind="lib" path="lib/jersey-json-1.18.1.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-jaxrs-1.9.13.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-xc-1.9.13.jar"/>
+	<classpathentry kind="lib" path="lib/cassandra-all-2.0.8.jar"/>
 	<classpathentry kind="output" path="target/war/WEB-INF/classes"/>
 </classpath>
