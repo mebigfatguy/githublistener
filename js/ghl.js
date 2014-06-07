@@ -28,6 +28,12 @@ function loadText() {
 		$( 'title' ).append(data.title);
 		$( 'h1' ).append(data.title);
 		$( 'h4' ).append(data.description);
+		$( '#projects_month' ).append("<a href='#'>" + data.projectsByMonth + "</a>");
+		$( '#projects_week' ).append("<a href='#'>" + data.projectsByWeek + "</a>");
+		$( '#projects_day' ).append("<a href='#'>" + data.projectsByDay + "</a>");
+		$( '#users_month' ).append("<a href='#'>" + data.usersByMonth + "</a>");
+		$( '#users_week' ).append("<a href='#'>" + data.usersByWeek + "</a>");
+		$( '#users_day' ).append("<a href='#'>" + data.usersByDay + "</a>");
 	});
 }
 

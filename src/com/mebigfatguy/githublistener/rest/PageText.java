@@ -35,4 +35,28 @@ public class PageText {
 	public String getDescription() {
 		return Bundle.getString(locale, Bundle.Description);
 	}
+	
+	public String getProjectsByMonth() {
+		return Bundle.getString(locale,  Bundle.ProjectsByMonth);
+	}
+	
+	public String getProjectsByWeek() {
+		return Bundle.getString(locale,  Bundle.ProjectsByWeek);
+	}
+	
+	public String getProjectsByDay() {
+		return Bundle.getString(locale,  Bundle.ProjectsByDay);
+	}
+	
+	public String getUsersByMonth() {
+		return Bundle.getString(locale,  Bundle.UsersByMonth);
+	}
+	
+	public String getUsersByWeek() {
+		return Bundle.getString(locale,  Bundle.UsersByWeek);
+	}
+	
+	public String getUsersByDay() {
+		return Bundle.getString(locale,  Bundle.UsersByDay);
+	}
 }

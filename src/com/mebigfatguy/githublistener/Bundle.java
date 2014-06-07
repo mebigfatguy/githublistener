@@ -7,6 +7,12 @@ public enum Bundle {
 
 	Title,
 	Description,
+	ProjectsByMonth,
+	ProjectsByWeek,
+	ProjectsByDay,
+	UsersByMonth,
+	UsersByWeek,
+	UsersByDay,
 	Users,
 	Projects,
 	ScoreByDay,
