@@ -104,8 +104,8 @@ public class CassandraModel {
         }
 
         try {
-            session.execute("CREATE TABLE github.project_events (project text, user text, date_time timestamp, type text, primary key(project, user))");
-            session.execute("CREATE TABLE github.user_events (user text, project text, date_time timestamp, type text, primary key(user, project))");
+            session.execute("CREATE TABLE github.project_events (project text, user text, date_time timestamp, type text, primary key(project, user, date_time)) WITH CLUSTERING ORDER BY (user ASC, date_time desc)");
+            session.execute("CREATE TABLE github.user_events (user text, project text, date_time timestamp, type text, primary key(user, project, date_time)) WITH CLUSTERING ORDER BY (project ASC, date_time desc)");
             session.execute("CREATE TABLE github.project_day_counts (project text, date timestamp, count counter, primary key (date, project))");
             session.execute("CREATE TABLE github.user_day_counts (user text, date timestamp, count counter, primary key (date, user))");
             session.execute("CREATE TABLE github.project_week_counts (project text, date timestamp, count counter, primary key (date, project))");
