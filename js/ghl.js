@@ -39,7 +39,7 @@ function loadStatistics(type, period) {
 				tbl.append("<tr><th>" + data.groupName + "</th><th>"
 						+ data.countName + "</th></tr>");
 				$.each(data.items, function(index, element) {
-					tbl.append("<tr><td>" + element.name + "</td><td>"
+					tbl.append("<tr><td><a href='https://github.com/" + element.name + "' target='blank'>" + element.name + "</a></td><td>"
 							+ element.count + "</td></tr>");
 				});
 			});
