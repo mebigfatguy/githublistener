@@ -1,6 +1,8 @@
 
 
 $(document).ready(function() {
+	loadText();
+	
 	$("#weightslink[rel]").overlay();
 	var selTab = $('li.active').attr('id');
 	var parts = selTab.split("_");
@@ -19,6 +21,15 @@ $('ul.nav').on('click', function(e) {
 	var parts = selTab.split("_");
 	loadStatistics(parts[0], parts[1]);
 });
+
+function loadText() {
+	var href = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
+	$.getJSON(href + "rest/statistics/text", function(data) {
+		$( 'title' ).append(data.title);
+		$( 'h1' ).append(data.title);
+		$( 'h4' ).append(data.description);
+	});
+}
 
 function loadWeights() {
 	var href = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);

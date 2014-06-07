@@ -40,6 +40,13 @@ public class StatisticsResource {
 	ServletContext context;
 	
 	@GET
+	@Path("/text")
+	@Produces(MediaType.APPLICATION_JSON)
+	public PageText getText(@Context HttpServletRequest request) {
+		return new PageText(request.getLocale());
+	}
+	
+	@GET
 	@Path("/weights")
 	@Produces(MediaType.APPLICATION_JSON)
 	@SuppressWarnings("unchecked")

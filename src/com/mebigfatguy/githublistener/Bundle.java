@@ -5,6 +5,8 @@ import java.util.ResourceBundle;
 
 public enum Bundle {
 
+	Title,
+	Description,
 	Users,
 	Projects,
 	ScoreByDay,
