@@ -1,14 +1,7 @@
 
 
 $(document).ready(function() {
-	loadText();
-	
-	var selTab = $('li.active').attr('id');
-	var parts = selTab.split("_");
-	
-	loadStatistics(parts[0], parts[1]);
-	loadWeights();
-
+	initialLoad();
 });
 
 $('ul.nav').on('click', function(e) {
@@ -21,7 +14,7 @@ $('ul.nav').on('click', function(e) {
 	loadStatistics(parts[0], parts[1]);
 });
 
-function loadText() {
+function initialLoad() {
 	var href = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
 	$.getJSON(href + "rest/statistics/text", function(data) {
 		$( 'title' ).append(data.title);
@@ -35,6 +28,12 @@ function loadText() {
 		$( '#users_day' ).append("<a href='#'>" + data.usersByDay + "</a>");
 		$( '#weights' ).append("<tr><th>" + data.event + "</th><th>" + data.weight + "</th></tr>");
 		$("#weightslink[rel]").overlay();
+		
+		var selTab = $('li.active').attr('id');
+		var parts = selTab.split("_");
+		
+		loadStatistics(parts[0], parts[1]);
+		loadWeights();
 	});
 }
 
