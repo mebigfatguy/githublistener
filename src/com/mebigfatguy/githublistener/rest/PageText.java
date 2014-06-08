@@ -59,4 +59,12 @@ public class PageText {
 	public String getUsersByDay() {
 		return Bundle.getString(locale,  Bundle.UsersByDay);
 	}
+	
+	public String getEvent() {
+		return Bundle.getString(locale, Bundle.Event);
+	}
+	
+	public String getWeight() {
+		return Bundle.getString(locale, Bundle.Weight);
+	}
 }

@@ -13,6 +13,8 @@ public enum Bundle {
 	UsersByMonth,
 	UsersByWeek,
 	UsersByDay,
+	Event,
+	Weight,
 	Users,
 	Projects,
 	ScoreByDay,

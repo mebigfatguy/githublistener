@@ -3,7 +3,6 @@
 $(document).ready(function() {
 	loadText();
 	
-	$("#weightslink[rel]").overlay();
 	var selTab = $('li.active').attr('id');
 	var parts = selTab.split("_");
 	
@@ -34,6 +33,8 @@ function loadText() {
 		$( '#users_month' ).append("<a href='#'>" + data.usersByMonth + "</a>");
 		$( '#users_week' ).append("<a href='#'>" + data.usersByWeek + "</a>");
 		$( '#users_day' ).append("<a href='#'>" + data.usersByDay + "</a>");
+		$( '#weights' ).append("<tr><th>" + data.event + "</th><th>" + data.weight + "</th></tr>");
+		$("#weightslink[rel]").overlay();
 	});
 }
 
