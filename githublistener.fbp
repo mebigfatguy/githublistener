@@ -20,7 +20,7 @@
   <AuxClasspathEntry>./lib/logback-core-1.1.2.jar</AuxClasspathEntry>
   <AuxClasspathEntry>./lib/lz4-1.2.0.jar</AuxClasspathEntry>
   <AuxClasspathEntry>./lib/metrics-core-3.0.2.jar</AuxClasspathEntry>
-  <AuxClasspathEntry>./lib/netty-3.9.0.Final.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>./lib/netty-3.9.2.Final.jar</AuxClasspathEntry>
   <AuxClasspathEntry>./lib/okhttp-1.5.3.jar</AuxClasspathEntry>
   <AuxClasspathEntry>./lib/slf4j-api-1.7.7.jar</AuxClasspathEntry>
   <AuxClasspathEntry>./lib/snappy-java-1.1.0.1.jar</AuxClasspathEntry>
