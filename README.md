@@ -1,7 +1,7 @@
 githublistener
 ==============
 
-A simple web app that will show most active user and projects on github by day, week and month.
+A simple web app that shows most active user and projects on github by day, week and month.
 
 Uses Cassandra as the events store, using the data-stax cql driver.
 
