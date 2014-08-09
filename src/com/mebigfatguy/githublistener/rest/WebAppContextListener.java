@@ -103,14 +103,14 @@ public class WebAppContextListener implements ServletContextListener {
 		}
 	}
 	
-	private void startDaemonThread(Runnable r, String name) {
+	private static void startDaemonThread(Runnable r, String name) {
 		Thread t = new Thread(r);
 		t.setDaemon(true);
 		t.setName(name);
 		t.start();
 	}
 	
-	private Map<GHEvent, Long> buildEventWeights(String eventWeights) {
+	private static Map<GHEvent, Long> buildEventWeights(String eventWeights) {
 		
 		
 		Map<GHEvent, Long> weights = new EnumMap<>(GHEvent.class);

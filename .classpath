@@ -32,7 +32,7 @@
 	<classpathentry kind="lib" path="lib/jackson-jaxrs-1.9.13.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-xc-1.9.13.jar"/>
 	<classpathentry kind="lib" path="lib/netty-3.9.2.Final.jar"/>
-	<classpathentry kind="lib" path="lib/cassandra-all-2.0.9.jar"/>
+	<classpathentry kind="lib" path="lib/cassandra-all-2.0.9.jar" sourcepath="/home/dave/.m2/repository/org/apache/cassandra/cassandra-all/2.0.9/cassandra-all-2.0.9-sources.jar"/>
 	<classpathentry kind="lib" path="lib/cassandra-driver-core-2.0.3.jar"/>
 	<classpathentry kind="output" path="target/war/WEB-INF/classes"/>
 </classpath>
