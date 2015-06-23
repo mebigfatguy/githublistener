@@ -39,7 +39,7 @@ public class CassandraModel {
 	private PreparedStatement usersByDayPS;
 	
 	
-	public CassandraModel(String[] endPoints, int replicationFactor) {
+	public CassandraModel(String[] endPoints, Integer replicationFactor) {
 		
 		cluster = new Cluster.Builder().addContactPoints(endPoints).build();
 		session = cluster.connect();
@@ -94,7 +94,7 @@ public class CassandraModel {
 	}
 
 	
-	private void setUpSchema(int replicationFactor) {
+	private void setUpSchema(Integer replicationFactor) {
 
         try {
             session.execute(String.format("CREATE KEYSPACE github WITH replication = { 'class' : 'SimpleStrategy', 'replication_factor' : %d }", replicationFactor));

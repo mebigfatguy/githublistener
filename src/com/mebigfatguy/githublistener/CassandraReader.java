@@ -75,7 +75,7 @@ public class CassandraReader {
 		return sortTopItems(rs);
 	}
 	
-	public ItemCount[] sortTopItems(ResultSet rs) {
+	private ItemCount[] sortTopItems(ResultSet rs) {
 		List<ItemCount> items = new ArrayList<ItemCount>(ROWS_GUESSTIMATE);
 		
 		for (Row row : rs) {

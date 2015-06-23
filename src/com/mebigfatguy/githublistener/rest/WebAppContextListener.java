@@ -63,7 +63,7 @@ public class WebAppContextListener implements ServletContextListener {
 				replicationFactor = Integer.valueOf(1);
 			}
 			
-			model = new CassandraModel(endPoints.split(","), replicationFactor.intValue());
+			model = new CassandraModel(endPoints.split(","), replicationFactor);
 			event.getServletContext().setAttribute("model", model);
 			
 			queue = new ArrayBlockingQueue<GHEventInfo>(10000);

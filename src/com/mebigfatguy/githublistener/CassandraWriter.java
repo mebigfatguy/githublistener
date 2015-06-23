@@ -35,6 +35,7 @@ import com.datastax.driver.core.exceptions.NoHostAvailableException;
 public class CassandraWriter implements Runnable {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CassandraWriter.class);
+	private static final Long DEFAULT_WEIGHT = Long.valueOf(1L);
 	
 	private final ArrayBlockingQueue<GHEventInfo> queue;
 	private CassandraModel model;
@@ -58,11 +59,11 @@ public class CassandraWriter implements Runnable {
 				LOGGER.debug("Writing event for project {} and user {}", project, user);
 				
 				String eventType;
-				long weight;
+				Long weight;
 				
 				if (event.getType() == null) {
 					eventType = "";
-					weight = 1;
+					weight = DEFAULT_WEIGHT;
 				} else {
 					eventType = event.getType().name();
 					weight = eventWeights.get(event.getType());
