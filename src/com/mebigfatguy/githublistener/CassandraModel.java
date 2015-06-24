@@ -99,6 +99,7 @@ public class CassandraModel {
         try {
             session.execute(String.format("CREATE KEYSPACE github WITH replication = { 'class' : 'SimpleStrategy', 'replication_factor' : %d }", replicationFactor));
         } catch (AlreadyExistsException aee) {
+        	//an expected event, this is good
         } finally {
             session.execute("use github");
         }
@@ -113,6 +114,7 @@ public class CassandraModel {
             session.execute("CREATE TABLE github.project_month_counts (project text, date timestamp, count counter, primary key (date, project))");
             session.execute("CREATE TABLE github.user_month_counts (user text, date timestamp, count counter, primary key (date, user))");
         } catch (AlreadyExistsException aee) {
+        	//an expected event, this is good
         } catch (Exception e) {
         	LOGGER.error("Failed creating tables for github events", e);
         }
