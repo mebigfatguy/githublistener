@@ -51,7 +51,7 @@ public class EventPoller implements Runnable {
 				LOGGER.debug("Attempting to pull events from github");
 				List<GHEventInfo> currentEvents = github.getEvents();
 				eventQueue.addAll(currentEvents);
-				LOGGER.debug("Event queue size is {}", eventQueue.size());
+				LOGGER.debug("Event queue size is {}", Integer.valueOf(eventQueue.size()));
 				Thread.sleep(POLL_TIME);
 			} catch (InterruptedException e) {
 				return;
