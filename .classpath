@@ -9,17 +9,13 @@
 	<classpathentry kind="lib" path="lib/jackson-mapper-asl-1.9.13.jar" sourcepath="lib/sources/jackson-mapper-asl-1.9.13-sources.jar"/>
 	<classpathentry kind="lib" path="lib/metrics-core-3.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/snappy-java-1.1.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/bridge-method-annotation-1.12.jar"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.7.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io-1.4.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang-2.6.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-databind-2.2.3.jar"/>
-	<classpathentry kind="lib" path="lib/okhttp-1.5.3.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-core-2.2.3.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-annotations-2.2.3.jar"/>
-	<classpathentry kind="lib" path="lib/joda-time-2.3.jar" sourcepath="lib/sources/joda-time-2.3-sources.jar"/>
 	<classpathentry kind="lib" path="lib/lz4-1.2.0.jar"/>
-	<classpathentry kind="lib" path="lib/github-api-1.53.jar" sourcepath="lib/sources/github-api-1.53-sources.jar"/>
 	<classpathentry kind="lib" path="lib/javax.servlet-api-3.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/jersey-core-1.18.1.jar" sourcepath="/home/dave/.m2/repository/com/sun/jersey/jersey-core/1.18.1/jersey-core-1.18.1-sources.jar"/>
 	<classpathentry kind="lib" path="lib/jersey-bundle-1.18.1.jar" sourcepath="lib/jersey-bundle-1.18.1.jar"/>
@@ -29,10 +25,15 @@
 	<classpathentry kind="lib" path="lib/jackson-xc-1.9.13.jar"/>
 	<classpathentry kind="lib" path="lib/netty-3.9.2.Final.jar"/>
 	<classpathentry kind="lib" path="lib/libthrift-0.9.2.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-api-1.7.12.jar"/>
-	<classpathentry kind="lib" path="lib/logback-classic-1.1.3.jar"/>
-	<classpathentry kind="lib" path="lib/logback-core-1.1.3.jar"/>
-	<classpathentry kind="lib" path="lib/cassandra-driver-core-2.1.8.jar"/>
 	<classpathentry kind="lib" path="lib/cassandra-all-2.1.17.jar"/>
+	<classpathentry kind="lib" path="lib/cassandra-driver-core-2.1.10.3.jar"/>
+	<classpathentry kind="lib" path="lib/github-api-1.85.jar" sourcepath="lib/sources/github-api-1.85-sources.jar"/>
+	<classpathentry kind="lib" path="lib/joda-time-2.9.9.jar"/>
+	<classpathentry kind="lib" path="lib/logback-classic-1.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/logback-core-1.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="lib/bridge-method-annotation-1.14.jar"/>
+	<classpathentry kind="lib" path="lib/okhttp-urlconnection-2.7.5.jar" sourcepath="lib/okhttp-urlconnection-2.7.5.jar"/>
+	<classpathentry kind="lib" path="lib/okhttp-2.7.5.jar"/>
 	<classpathentry kind="output" path="target/war/WEB-INF/classes"/>
 </classpath>
