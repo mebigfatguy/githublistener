@@ -23,9 +23,7 @@
 	<classpathentry kind="lib" path="lib/jersey-json-1.18.1.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-jaxrs-1.9.13.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-xc-1.9.13.jar"/>
-	<classpathentry kind="lib" path="lib/netty-3.9.2.Final.jar"/>
 	<classpathentry kind="lib" path="lib/libthrift-0.9.2.jar"/>
-	<classpathentry kind="lib" path="lib/cassandra-all-2.1.17.jar"/>
 	<classpathentry kind="lib" path="lib/cassandra-driver-core-2.1.10.3.jar"/>
 	<classpathentry kind="lib" path="lib/github-api-1.85.jar" sourcepath="lib/sources/github-api-1.85-sources.jar"/>
 	<classpathentry kind="lib" path="lib/joda-time-2.9.9.jar"/>
@@ -35,5 +33,7 @@
 	<classpathentry kind="lib" path="lib/bridge-method-annotation-1.14.jar"/>
 	<classpathentry kind="lib" path="lib/okhttp-urlconnection-2.7.5.jar" sourcepath="lib/okhttp-urlconnection-2.7.5.jar"/>
 	<classpathentry kind="lib" path="lib/okhttp-2.7.5.jar"/>
+	<classpathentry kind="lib" path="lib/netty-all-4.0.44.Final.jar"/>
+	<classpathentry kind="lib" path="lib/cassandra-all-2.1.20.jar"/>
 	<classpathentry kind="output" path="target/war/WEB-INF/classes"/>
 </classpath>
