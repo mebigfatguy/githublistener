@@ -4,7 +4,6 @@
 	<classpathentry kind="src" path="conf"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/commons-cli-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/guava-17.0.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-core-asl-1.9.13.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-mapper-asl-1.9.13.jar" sourcepath="lib/sources/jackson-mapper-asl-1.9.13-sources.jar"/>
 	<classpathentry kind="lib" path="lib/metrics-core-3.0.2.jar"/>
@@ -35,5 +34,6 @@
 	<classpathentry kind="lib" path="lib/netty-all-4.0.44.Final.jar"/>
 	<classpathentry kind="lib" path="lib/cassandra-all-2.1.20.jar"/>
 	<classpathentry kind="lib" path="lib/snappy-java-1.0.5.jar"/>
+	<classpathentry kind="lib" path="lib/guava-25.1-jre.jar"/>
 	<classpathentry kind="output" path="target/war/WEB-INF/classes"/>
 </classpath>
